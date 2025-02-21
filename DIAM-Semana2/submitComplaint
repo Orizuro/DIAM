@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Submissão de Formulário de Voluntariado</title>
+    <title>Portal de Reclamações</title>
 </head>
 <body>
-<h1>Sucesso!!! Formulário Submetido</h1>
+<h1>Informamos que a sua queixa foi submetida com sucesso!</h1>
 <button onclick="location.href = 'home.html'"> Voltar</button>
 
 </body>
 </html>
+    
