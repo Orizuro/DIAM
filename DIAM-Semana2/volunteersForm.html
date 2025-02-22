@@ -20,7 +20,7 @@
         <main>
 
             <h1> Formulário para candidatura a voluntário</h1>
-            <form action="submit.html"  method="POST">
+            <form action="submit.html"  method="POST" name="volunteerForm">
             <label for="name">Nome Completo:</label><br>
             <input type="text" id="name" name="name"><br>
             <br>
@@ -62,7 +62,7 @@
             </div>
 
             <input type="button" value="Validar Comentário" onclick="isCommentValid()">
-            <input type="submit" value="Submeter">
+            <input type="button" value="Submeter" onclick="canSubmit()">
 
             </form>
         
