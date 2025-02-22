@@ -1,62 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Reclamações</title>
-    <link rel="styles" type="text/css" href="styles.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Portal de Reclamações</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script src="naughty.js"></script>
+    </head>
 
-<body>
-    <header>
-        <div id="over" style=" justify-content: center; display: flex; align-items: center">
-            <div styls""> <img src="assets/festival-vilar-de-mouros-bg.jpg" width="100%" alt=""></div>
-            <div style="position: absolute; display: flex;"> <img src="assets/logo-datas-2025.png" alt=""> </div>
-        </div>
-    </header>
-        <h1> Formulário para candidatura a voluntário</h1>
-        <form action="submit.html"  method="POST">
-        <label for="name">Nome Completo:</label><br>
-        <input type="text" id="name" name="name"><br>
-        <br>
-        <label for="contacto">Contacto:</label><br>
-        <input type="text" id="contacto" name="contacto"><br>
-        <br>
-        <div class="grid">
-            <div>
-                Datas:
+    <body>
+        <header>
+            <div id="over" style=" justify-content: center; display: flex; align-items: center">
+                <div styls""> <img src="assets/festival-vilar-de-mouros-bg.jpg" width="100%" alt=""></div>
+                <div style="position: absolute; display: flex;"> <img src="assets/logo-datas-2025.png" alt=""> </div>
+            </div>
+        </header>
+
+        <main>
+
+            <h1> Formulário para candidatura a voluntário</h1>
+            <form action="submit.html"  method="POST">
+            <label for="name">Nome Completo:</label><br>
+            <input type="text" id="name" name="name"><br>
+            <br>
+            <label for="contacto">Contacto:</label><br>
+            <input type="text" id="contacto" name="contacto"><br>
+            <br>
+            
+            <div class="grid">
+                <div>
+                    Datas:
+                    <br>
+                    <input type="checkbox" name="check-1" value="check-1" id="check-1">
+                    <label for="check-1">21/08/2025</label>
+                    <input type="checkbox" name="check-2" value="check-2" id="check-2">
+                    <label for="check-2">22/08/2025</label>
+                    <input type="checkbox" name="check-3" value="check-3" id="check-3">
+                    <label for="check-3">23/08/2025</label>
+                </div>
+
                 <br>
-                <input type="checkbox" name="check-1" value="check-1" id="check-1">
-                <label for="check-1">21/08/2025</label>
-                <input type="checkbox" name="check-2" value="check-2" id="check-2">
-                <label for="check-2">22/08/2025</label>
-                <input type="checkbox" name="check-3" value="check-3" id="check-3">
-                <label for="check-3">23/08/2025</label>
+
+                <div>
+                    Horário:
+                    <br>
+                    <input type="checkbox" name="check-4" value="check-4" id="check-4">
+                    <label for="check-4">Manhã</label>
+                    <input type="checkbox" name="check-5" value="check-5" id="check-5">
+                    <label for="check-5">Tarde</label>
+                    <input type="checkbox" name="check-6" value="check-6" id="check-6">
+                    <label for="check-6">Noite</label>
+                </div>
             </div>
             <br>
+
             <div>
-                Horário:
-                <br>
-                <input type="checkbox" name="check-4" value="check-4" id="check-4">
-                <label for="check-4">Manhã</label>
-                <input type="checkbox" name="check-5" value="check-5" id="check-5">
-                <label for="check-5">Tarde</label>
-                <input type="checkbox" name="check-6" value="check-6" id="check-6">
-                <label for="check-6">Noite</label>
+                <label for="reclamacao">Comentário:</label><br>
+                <textarea name="reclamacao" id="comment" cols="30" rows="10"></textarea><br>
+                <p id="comment-text"></p>
             </div>
-        </div>
-        <br>
-        <input type="submit" value="Submeter">
 
+            <input type="button" value="Validar Comentário" onclick="isCommentValid()">
+            <input type="submit" value="Submeter"">
 
-    </form>
-    <br>
-    <button onclick="location.href ='home.html'"> Voltar</button>
+            </form>
+        
+            <br>
 
-</body>
+            <button onclick="location.href ='home.html'"> Voltar</button>
+        
+        </main>
 
-<footer>
-</footer>
+    </body>
+
+    <footer>
+        <p style="text-align: center;">© 2025 Festival Vilar de Mouros</p1>
+    </footer>
 
 </html>
