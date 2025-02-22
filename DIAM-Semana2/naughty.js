@@ -24,15 +24,25 @@ const insultosPoucoConhecidos = [
 console.log(insultosPoucoConhecidos)
 
 function isCommentValid() {
-  comment = document.getElementById("comment").innerText
+  comment = document.getElementById("comment").value.toLowerCase()
+  commetElement = document.getElementById("comment-text")
 
-  if(!comment)
-    return
+  isValid = true 
+
+  if(!comment) {
+      commetElement.innerText = ""
+      return
+  }
 
   insultosPoucoConhecidos.forEach(element => {
-   if(comment.contains(element))
-    return
+   if(comment.includes(element)) {
+      console.log(`found ${element} in comment`)
+      commetElement.innerText = ""
+      isValid = false
+      return
+    }
   });
 
-  document.getElementById("comment-text").innerText = "Comentário aceite"
+  if(isValid)
+    commetElement.innerText = "Comentário aceite"
 } 
