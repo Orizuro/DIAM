@@ -31,16 +31,16 @@ function isCommentValid() {
 
   comment = commentElement.value.toLowerCase()
 
-  isValid = true 
+  isValid = true
 
   // If there's no comment
-  if(!comment) {
-      commentElement.innerText = ""
-      return false
+  if (!comment) {
+    commentElement.innerText = ""
+    return false
   }
 
   insultosPoucoConhecidos.forEach(element => {
-   if(comment.includes(element)) {
+    if (comment.includes(element)) {
       console.info(`Found ${element} in comment`)
 
       // clear the textArea
@@ -52,17 +52,17 @@ function isCommentValid() {
     }
   });
 
-  if(isValid)
+  if (isValid)
     successTextElement.innerText = "Comentário aceite"
 
   return isValid
-} 
+}
 
 // A function to check if it can submit
 function canSubmit() {
 
   // Only submists the form if is valid
-  if(isCommentValid()){
+  if (isCommentValid()) {
     console.log("The comment is valid!")
     document.volunteerForm.submit()
   }
