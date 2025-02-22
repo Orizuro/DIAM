@@ -23,16 +23,47 @@ const insultosPoucoConhecidos = [
 
 console.log(insultosPoucoConhecidos)
 
+// A function to check if the comment is isValid
+// returns a boolean
 function isCommentValid() {
-  comment = document.getElementById("comment").innerText
+  commentElement = document.getElementById("comment")
+  successTextElement = document.getElementById("comment-text")
 
-  if(!comment)
-    return
+  comment = commentElement.value.toLowerCase()
+
+  isValid = true 
+
+  // If there's no comment
+  if(!comment) {
+      commentElement.innerText = ""
+      return false
+  }
 
   insultosPoucoConhecidos.forEach(element => {
-   if(comment.contains(element))
-    return
+   if(comment.includes(element)) {
+      console.info(`Found ${element} in comment`)
+
+      // clear the textArea
+      commentElement.value = ""
+
+      successTextElement.innerText = ""
+      isValid = false
+      return
+    }
   });
 
-  document.getElementById("comment-text").innerText = "Comentário aceite"
+  if(isValid)
+    successTextElement.innerText = "Comentário aceite"
+
+  return isValid
 } 
+
+// A function to check if it can submit
+function canSubmit() {
+
+  // Only submists the form if is valid
+  if(isCommentValid()){
+    console.log("The comment is valid!")
+    document.volunteerForm.submit()
+  }
+}
