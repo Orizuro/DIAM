@@ -6,26 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Página Inicial - Festival Vilar de Mouros 2025 [46ª edição]</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="slideshow.css">
     <script src="naughty.js"></script>
-
-    
 </head>
 
 <body>
 
-<header>
+  <header>
     <div id="over" style=" justify-content: center; display: flex; align-items: center">
-        <div style=""> <img src="assets/festival-vilar-de-mouros-bg.jpg" width="100%" alt=""></div>
-        <div style="position: absolute; display: flex;"> <img src="assets/logo-datas-2025.png" alt=""> </div>
+      <div style=""> <img src="assets/festival-vilar-de-mouros-bg.jpg" width="100%" alt=""></div>
+      <div style="position: absolute; display: flex;"> <img src="assets/logo-datas-2025.png" alt=""> </div>
     </div>
    
     <h2 style="color: white;"> Bem-vindo ao mais antigo festival de música do país! </h2>
   
-</header>
+  </header>
 
-<main>
-
-    
+  <main>
     <ul>
         <li><a href="home.html">Página Inicial</a></li>
         <li><a href="about.html">Sobre</a></li>
@@ -37,7 +34,32 @@
     </ul>
 
     <section>
-        <p> Colocar aqui o slideshow com fotos de edições anteriores deste festival </p>
+      <h2> Fotos de edições anteriores </h2>
+
+      <div class="slideshow-container">
+        <div class="slideElem">
+          <img src="assets/festival2024.webp" alt="Festival 2024" style="width: 100%;">
+        </div>
+
+        <div class="slideElem">
+          <img src="assets/festival2023.webp" alt="Festival 2023" style="width: 100%;">
+        </div>
+
+        <div class="slideElem">
+          <img src="assets/festival2022.jpg" alt="Festival 2022" style="width: 100%;">
+        </div>
+
+        <div class="slideElem">
+          <img src="assets/festival2021.webp" alt="Festival 2021" style="width: 100%;">
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <span class="dot" onclick="currentSlide(0)"></span> 
+        <span class="dot" onclick="currentSlide(1)"></span> 
+        <span class="dot" onclick="currentSlide(2)"></span> 
+        <span class="dot" onclick="currentSlide(3)"></span> 
+      </div>
     </section>
 
     <br>
@@ -56,6 +78,7 @@
     <p style="color: white; font-size: 0.8em; font-family: Arial, sans-serif; text-align: center;">© 2025 Festival Vilar de Mouros</p>
 </footer>
 
+  <script src="slideshow.js"></script>
 </body>
 
 </html>
