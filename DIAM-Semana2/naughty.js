@@ -66,4 +66,5 @@ function canSubmit() {
     console.log("The comment is valid!")
     document.volunteerForm.submit()
   }
+  
 }
