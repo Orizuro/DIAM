@@ -14,8 +14,14 @@
 
   <header>
     <div id="over" style=" justify-content: center; display: flex; align-items: center">
-      <div style=""> <img src="assets/festival-vilar-de-mouros-bg.jpg" width="100%" alt=""></div>
-      <div style="position: absolute; display: flex;"> <img src="assets/logo-datas-2025.png" alt=""> </div>
+      <div> 
+        <img src="assets/festival-vilar-de-mouros-bg.jpg" width="100%" alt="">
+      </div>
+      <div style="position: absolute; display: flex;"> 
+        <img id="date-img" onmouseover="hideImg()" src="assets/logo-datas-2025.png" alt="" > 
+      </div>
+
+      <button id="hide-btn" style="display: none;" type="button" onclick="unhideImg()">Mostar imagem</button>
     </div>
    
     <h2 style="color: white;"> Bem-vindo ao mais antigo festival de música do país! </h2>
@@ -52,13 +58,6 @@
         <div class="slideElem">
           <img src="assets/festival2021.webp" alt="Festival 2021" style="width: 100%;">
         </div>
-      </div>
-
-      <div style="text-align: center;">
-        <span class="dot" onclick="currentSlide(0)"></span> 
-        <span class="dot" onclick="currentSlide(1)"></span> 
-        <span class="dot" onclick="currentSlide(2)"></span> 
-        <span class="dot" onclick="currentSlide(3)"></span> 
       </div>
     </section>
 

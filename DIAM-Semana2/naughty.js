@@ -66,5 +66,16 @@ function canSubmit() {
     console.log("The comment is valid!")
     document.volunteerForm.submit()
   }
-  
+
+}
+
+//img = document.getElementById("date-img");
+function hideImg() {
+  document.getElementById("date-img").style.visibility = "hidden" 
+  document.getElementById("hide-btn").style.display = "block"
+}
+
+function unhideImg() {
+  document.getElementById("date-img").style.visibility = "visible" 
+  document.getElementById("hide-btn").style.display = "none"
 }
