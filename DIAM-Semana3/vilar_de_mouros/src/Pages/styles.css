@@ -1,6 +1,6 @@
 /* Neste ficheiro serão definidos os estilos a utilizar neste projeto */
 
-h1{ color: rgb(38, 39, 36); font-size: 2em; font-family: Arial, sans-serif; text-align: left;}
+h1{color: rgb(38, 39, 36); font-size: 2em; font-family: Arial, sans-serif; text-align: left;}
 
 h2{color:  rgb(38, 39, 36); font-size: 1em; font-family: Arial, sans-serif; text-align: left;}
 
@@ -10,16 +10,22 @@ p{color:  rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; tex
 
 td{color: rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; text-align: justify;}
 
+.mainHeading {color: white; font-size: 2rem; font-family: Arial,sans-serif; text-align: left;}
 
-header, body, footer {
+
+.Header {
     background-color: rgb(38, 39, 36); 
     color: white;
     padding: 1px;
 }
 
+.Footer {
+    background-color: rgb(38, 39, 36); 
+    color: white;
+    padding: 1px;
+}
 
-
-main {
+.Main {
     background-color: white; 
     color:  rgb(38, 39, 36);
     padding: 10px;
@@ -50,3 +56,4 @@ ul {
   li a:hover {
     background-color: #111;
   }
+
