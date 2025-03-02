@@ -7,28 +7,31 @@ import festival2024 from '../Images/festival2024.webp';
 import recinto from '../Images/recinto.jpeg';
 
 function Main(){
+
+    const scrollToSection = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return(
         <div className="MainBox">
 
             {/* ------------------------ Página Incial ------------------------ */}
 
             <div id="Home">
-
-                {/***********mais vale não meter já, já que o prof pede no**************
-                 ************* enunciado que seja tudo numa unica pagina*****************
                 <div id="nav_bar">
                     <ul>
-                        <li><a href="home.html">Página Inicial</a></li>
-                        <li><a href="about.html">Sobre</a></li>****
-                        <li><a href="lineUp.html">Cartaz</a></li>
-                        <li><a href="volunteersForm.html">Voluntariado</a></li>
-                        <li><a href="latestNews.html">Últimas Notícias</a></li>
-                        <li><a href="contacts.html">Contactos</a></li>
-                        <li><a href="complaints.html">Reclamações</a></li>
+                        <li><a href="#Home" onClick={(e) => { e.preventDefault(); scrollToSection("Home"); }}>Página Inicial</a></li>
+                        <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection("about"); }}>Sobre</a></li>
+                        <li><a href="#lineUp" onClick={(e) => { e.preventDefault(); scrollToSection("lineUp"); }}>Cartaz</a></li>
+                        <li><a href="#volunteersForm" onClick={(e) => { e.preventDefault(); scrollToSection("volunteersForm"); }}>Voluntariado</a></li>
+                        <li><a href="#latestNews" onClick={(e) => { e.preventDefault(); scrollToSection("latestNews"); }}>Últimas Notícias</a></li>
+                        <li><a href="#contacts" onClick={(e) => { e.preventDefault(); scrollToSection("contacts"); }}>Contactos</a></li>
+                        <li><a href="#complaints" onClick={(e) => { e.preventDefault(); scrollToSection("complaints"); }}>Reclamações</a></li>
                     </ul>
                 </div>
-                ************************************************************************/}
-
                 {/* TODO - transformar estas 4 fotos num slideshow */}
                 <div id="SlidShow"> 
                     <h2> Fotos de Edições Anteriores </h2>
