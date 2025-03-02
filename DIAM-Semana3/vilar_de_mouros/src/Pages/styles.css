@@ -10,26 +10,40 @@ p{color:  rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; tex
 
 td{color: rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; text-align: justify;}
 
+figcaption {color:rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; text-align: center;}
+
 .mainHeading {color: white; font-size: 2rem; font-family: Arial,sans-serif; text-align: left;}
 
 
 .Header {
     background-color: rgb(38, 39, 36); 
-    color: white;
+    color:  rgb(38, 39, 36);
     padding: 1px;
 }
 
 .Footer {
-    background-color: rgb(38, 39, 36); 
-    color: white;
+    background-color: rgb(38, 39, 36);
+    color:  rgb(38, 39, 36); 
     padding: 1px;
 }
 
+body {
+  background-color: rgb(38, 39, 36);
+  color:  rgb(38, 39, 36); 
+  padding: 1px;
+}
+
 .Main {
-    background-color: white; 
+    background-color: rgb(38, 39, 36); 
     color:  rgb(38, 39, 36);
     padding: 10px;
     margin: 1px;
+}
+
+.MainBox {
+    background-color:  rgb(215, 216, 213); 
+    color:  white;
+    padding: 10px;
 }
 
 ul {
