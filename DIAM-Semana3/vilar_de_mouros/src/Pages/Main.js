@@ -5,9 +5,32 @@ import festival2022 from '../Images/festival2022.jpg';
 import festival2023 from '../Images/festival2023.webp';
 import festival2024 from '../Images/festival2024.webp';
 import recinto from '../Images/recinto.jpeg';
+import VolunteerForm from "./volunteersForm";
+import Slideshow from "./slideshow";
 
 function Main(){
-
+    const scheduleData = [
+        { date: "21 de Agosto", time: "20:00", artist: "Amália Hoje" },
+        { date: "21 de Agosto", time: "21:00", artist: "Delfins" },
+        { date: "21 de Agosto", time: "22:00", artist: "GNR" },
+        { date: "21 de Agosto", time: "23:00", artist: "The Legendary Tigerman" },
+        { date: "21 de Agosto", time: "00:00", artist: "Fogo Frio" },
+        { date: "22 de Agosto", time: "20:00", artist: "The Cult" },
+        { date: "22 de Agosto", time: "21:00", artist: "Xutos & Pontapés" },
+        { date: "22 de Agosto", time: "22:00", artist: "Soulfly" },
+        { date: "22 de Agosto", time: "23:00", artist: "Moonspell" },
+        { date: "22 de Agosto", time: "00:00", artist: "Ramp" },
+        { date: "23 de Agosto", time: "20:00", artist: "Die Antwoord" },
+        { date: "23 de Agosto", time: "21:00", artist: "Ornatos Violeta" },
+        { date: "23 de Agosto", time: "22:00", artist: "Crystal Fighters" },
+        { date: "23 de Agosto", time: "23:00", artist: "Capitão Fausto" },
+        { date: "23 de Agosto", time: "00:00", artist: "Sulfur Giant" },
+        { date: "24 de Agosto", time: "20:00", artist: "The Darkness" },
+        { date: "24 de Agosto", time: "21:00", artist: "The Libertines" },
+        { date: "24 de Agosto", time: "22:00", artist: "The Waterboys" },
+        { date: "24 de Agosto", time: "23:00", artist: "David Fonseca" },
+        { date: "24 de Agosto", time: "00:00", artist: "Vapors of Morphine" },
+    ];
     const scrollToSection = (id) => {
         const section = document.getElementById(id);
         if (section) {
@@ -32,44 +55,7 @@ function Main(){
                         {/*<li><a href="#complaints" onClick={(e) => { e.preventDefault(); scrollToSection("complaints"); }}>Reclamações</a></li>*/}
                     </ul>
                 </div>
-                {/* TODO - transformar estas 4 fotos num slideshow */}
-                <div id="SlidShow"> 
-                    <h2> Fotos de Edições Anteriores </h2>
-                    <div class="slideshow-container">
-                        <div class="slideElem">
-                            <img
-                                src={festival2024}
-                                className="festival2024"
-                                alt="Festival 2024"
-                                style={{ height:"450px" }}
-                            />
-                        </div>
-                        <div class="slideElem">
-                            <img
-                                src={festival2023}
-                                className="festival2023"
-                                alt="Festival 2023"
-                                style={{ height:"450px" }}
-                            />
-                        </div>
-                        <div class="slideElem">
-                            <img
-                                src={festival2022}
-                                className="festival2022"
-                                alt="Festival 2022"
-                                style={{ height:"450px" }}
-                            />
-                        </div>
-                        <div class="slideElem">
-                            <img
-                                src={festival2021}
-                                className="festival2021"
-                                alt="Festival 2021"
-                                style={{ height:"450px" }}
-                            />
-                        </div>
-                    </div>
-                </div>
+                <Slideshow/>
             </div>
             <br/>
                 
@@ -99,7 +85,28 @@ function Main(){
     
             <div id="lineUp">
                 <h2> Programação da 46ª Edição do Festival </h2>
-                {/* TODO */}            
+                <section id="programacao">
+                    <div className="table-container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Artista</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {scheduleData.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.date}</td>
+                                    <td>{item.time}</td>
+                                    <td>{item.artist}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
             <br/>
 
@@ -107,7 +114,7 @@ function Main(){
 
             <div id="volunteersForm">
                 <h2> Formulário de Candidatura a Voluntário </h2>
-                {/* TODO */}                
+                <VolunteerForm/>
             </div>
             <br/>
 
@@ -115,23 +122,45 @@ function Main(){
 
             <div id="latestNews">
                 <h2> Últimas Notícias </h2>
-                    <h3 style={{textAlign:"center"}}>🎸 Bandas confirmadas para este festival </h3>
-                    <p style={{textAlign:"center"}}> Para já temos os seguintes artistas confirmados: </p>
-                    {/* TODO -  meter aqui a tabela que fizeste para a parte do cartaz */}  
-                    <h3 style={{textAlign:"center"}}>🏕️ Área de campismo.</h3>
-                    <p style={{textAlign:"center"}}> A área de campismo do festival terá capacidade para 5000 pessoas.</p>                  
+                <h3 style={{textAlign: "center"}}>🎸 Bandas confirmadas para este festival </h3>
+                <p style={{textAlign: "center"}}> Para já temos os seguintes artistas confirmados: </p>
+                <section id="programacao">
+                    <div className="table-container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Artista</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {scheduleData.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.date}</td>
+                                    <td>{item.time}</td>
+                                    <td>{item.artist}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                    <h3 style={{textAlign: "center"}}>🏕️ Área de campismo.</h3>
+                    <p style={{textAlign: "center"}}> A área de campismo do festival terá capacidade para 5000
+                        pessoas.</p>
 
-                <div>
-                    <img
-                        src={recinto}
-                        className="recinto"
-                        alt="Foto tirada na 1ª edição do Festival"
-                        style={{ height:"450px" }}
-                    />
-                    <figcaption>Mapa do Recinto da 46ª edição do Festival Vilar de Mouros</figcaption>
-                </div>
+                    <div>
+                        <img
+                            src={recinto}
+                            className="recinto"
+                            alt="Foto tirada na 1ª edição do Festival"
+                            style={{height: "450px"}}
+                        />
+                        <figcaption>Mapa do Recinto da 46ª edição do Festival Vilar de Mouros</figcaption>
+                    </div>
 
-                </div>  
+            </div>
             <br/>
 
             {/* -------------------------- Contactos -------------------------- */}

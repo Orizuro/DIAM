@@ -1,18 +1,53 @@
-let slideIndex = 0 
-showSlides(slideIndex)
+import React, {useEffect, useState} from 'react';
+import "./slideshow.css"
 
-function showSlides() {
-  let slides = document.getElementsByClassName("slideElem");
-  let dots = document.getElementsByClassName("dot");
+import festival2021 from '../Images/festival2021.webp';
+import festival2022 from '../Images/festival2022.jpg';
+import festival2023 from '../Images/festival2023.webp';
+import festival2024 from '../Images/festival2024.webp';
 
-  for(let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none"
-  }
-  slideIndex++;
+const Slideshow = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  if(slideIndex > slides.length) slideIndex = 1
+  const images = [
+    { src: festival2024, alt: 'Festival 2024' },
+    { src: festival2023, alt: 'Festival 2023' },
+    { src: festival2022, alt: 'Festival 2022' },
+    { src: festival2021, alt: 'Festival 2021' }
+  ];
 
-  slides[slideIndex-1].style.display = "block";
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
 
-  setTimeout(showSlides, 2500); // Change image every 2 seconds
-}
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+      <div>
+        <h2>Fotos de edições anteriores</h2>
+        <div className="slideshow-container">
+          <div className="slideElem">
+            <img
+                src={images[currentIndex].src}
+                alt={images[currentIndex].alt}
+            />
+          </div>
+        </div>
+        <button onClick={prevSlide}>Previous</button>
+        <button onClick={nextSlide}>Next</button>
+      </div>
+  );
+};
+
+export default Slideshow;
+
