@@ -1,10 +1,7 @@
 // Objective: Create the header of the page
 
-//TODO: Meter aqui a imagem com as duas imagens fotoHeaderBig e fotoHeaderSmall como deve ser
-
-import fotoHeader from './fotoHeader.jpg';
-import fotoHeaderBig from './fotoHeaderBig.jpg';
-import fotoHeaderSmall from './fotoHeaderSmall.png';
+import fotoHeaderBig from '../Images/fotoHeaderBig.jpg';
+import fotoHeaderSmall from '../Images/fotoHeaderSmall.png';
 import { useState } from "react"; // para poder usar o estado
 
 
