@@ -1,0 +1,52 @@
+/* Neste ficheiro serão definidos os estilos a utilizar neste projeto */
+
+h1{ color: rgb(38, 39, 36); font-size: 2em; font-family: Arial, sans-serif; text-align: left;}
+
+h2{color:  rgb(38, 39, 36); font-size: 1em; font-family: Arial, sans-serif; text-align: left;}
+
+h3{color:  rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; text-align: left;}
+
+p{color:  rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; text-align: justify;}
+
+td{color: rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; text-align: justify;}
+
+
+header, body, footer {
+    background-color: rgb(38, 39, 36); 
+    color: white;
+    padding: 1px;
+}
+
+
+
+main {
+    background-color: white; 
+    color:  rgb(38, 39, 36);
+    padding: 10px;
+    margin: 1px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }

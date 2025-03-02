@@ -1,7 +1,5 @@
-import header from './Header.js';
-import main from './Main.js';
-import footer from './Footer.js';
 import './App.css';
+import './styles.css';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import Header from './Header.js';
