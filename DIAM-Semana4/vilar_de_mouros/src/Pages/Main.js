@@ -8,13 +8,17 @@ function Main() {
   return (
     <div className="MainBox">
 
-      <h1>Artistas</h1>
+      <h1>
+        {
+          artists.length === 0 
+          ? "Lamentos mas de momento não há artistas..."
+          : "Lista de artistas"
+        }
+      </h1>
 
       {
         // Check if exists an artist in the json file
-        artists.length == 0 ?
-          <p>Lamentos mas de momento não existem artistas...</p>
-          :
+        artists.length !== 0 && 
 
           // load all the artists in the file
           artists.map((item, i) => {
@@ -28,6 +32,7 @@ function Main() {
                 estilo={item.estilo}
                 descricao={item.descricao}
                 link={item.link}
+                isBand={item.isBand}
               ></Artist>
             </>
           })

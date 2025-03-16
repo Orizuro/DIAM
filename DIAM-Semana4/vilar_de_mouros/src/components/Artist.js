@@ -11,10 +11,10 @@ const toggleVideo = (nome) => {
 
 }
 
-export default function Artist({ nome, imagem, estilo, descricao, link, atuacao }) {
+export default function Artist({ nome, imagem, estilo, descricao, link, atuacao, isBand }) {
   return (
     <section className="artistContainer">
-      <h3>Nome: {nome}</h3>
+      <h3>Nome: {nome} {isBand && "(Banda)"} </h3>
       <p><b>Atuação:</b> {atuacao}</p>
       <img src={imagem} alt="" width={500} onClick={() => toggleVideo(nome)} />
       <p><b>Estilo musical:</b> {estilo}</p>
@@ -22,6 +22,7 @@ export default function Artist({ nome, imagem, estilo, descricao, link, atuacao 
 
       <iframe
         id={'youtubeVideo_' + nome}
+        title="Video clip"
         width={600}
         height={400}
         src={link}
