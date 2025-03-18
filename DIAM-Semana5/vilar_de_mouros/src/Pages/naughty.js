@@ -1,0 +1,22 @@
+export const insultosPoucoConhecidos = [
+  "abécula",
+  "abentesma",
+  "achavascado",
+  "alimária",
+  "andrajoso",
+  "barregã",
+  "biltre",
+  "cacóstomo",
+  "cuarra",
+  "estólido",
+  "estroso",
+  "estultilóquio",
+  "nefelibata",
+  "néscio",
+  "pechenga",
+  "sevandija",
+  "somítico",
+  "tatibitate",
+  "xexé",
+  "xexelento"
+];
