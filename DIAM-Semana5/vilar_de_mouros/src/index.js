@@ -4,7 +4,6 @@ import './index.css';
 import App from './Pages/App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import FormVoluntario from "./Pages/FormVoluntario";
 import FormPage from "./Pages/FormPage";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,7 +12,6 @@ root.render(
         <Routes>
             <Route path="/" element={<App />} />
             <Route path="/voluntario" element={<FormPage />} />
-
         </Routes>
     </BrowserRouter>
 );

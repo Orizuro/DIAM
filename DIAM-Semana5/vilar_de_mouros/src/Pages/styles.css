@@ -2,7 +2,7 @@
 
 h1{color: rgb(38, 39, 36); font-size: 2em; font-family: Arial, sans-serif; text-align: left;}
 
-h2{color:  rgb(38, 39, 36); font-size: 1em; font-family: Arial, sans-serif; text-align: left;}
+h2{color:  rgb(38, 39, 36); font-size: 1.2em; font-family: Arial, sans-serif; text-align: left;}
 
 h3{color:  rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-serif; text-align: left;}
 
@@ -16,6 +16,10 @@ figcaption {color:rgb(38, 39, 36); font-size: 0.8em; font-family: Arial, sans-se
 
 .mainHeading {color: white; font-size: 2rem; font-family: Arial,sans-serif; text-align: left;}
 
+#nav_bar {
+  font-weight: bold;
+  font-size: 1em;
+}
 
 .Header {
     background-color: rgb(38, 39, 36); 
@@ -136,7 +140,6 @@ input, textarea {
 }
 
 .grid-section {
-    display: flex;
     align-items: start;
     flex-direction: column;
     gap: 5px;

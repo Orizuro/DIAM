@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { insultosPoucoConhecidos } from "./naughty";
 import "./styles.css"
-import Footer from "./Footer";
 
 const availableDates = [
   "21/08/2025",
@@ -23,6 +23,7 @@ const FormVoluntario = () => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [hasNaughtyWord, setHasNaughtyWord] = useState(false);
+  const navigate = useNavigate();
 
 
   const handleComment = (comment) => {
@@ -61,6 +62,7 @@ const FormVoluntario = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     alert(`Obrigado ${name} pela sua inscrição, em breve será contactado pela organização do festival`);
+    navigate("/");
   }
 
   return (
