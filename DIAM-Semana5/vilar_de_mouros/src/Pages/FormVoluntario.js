@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { insultosPoucoConhecidos } from "./naughty";
 import "./styles.css"
+import Footer from "./Footer";
 
 const availableDates = [
   "21/08/2025",
@@ -64,6 +65,8 @@ const FormVoluntario = () => {
 
   return (
     <div className="volunteerForm">
+      <h2> Formulário de Candidatura a Voluntário </h2>
+      <br/>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Nome Completo:</label><br />
@@ -71,7 +74,7 @@ const FormVoluntario = () => {
           type="text"
           id="name"
           name="name"
-          onChange={setName}
+          onChange={(e)=> setName(e.target.value)}
           required
         />
         <br /><br />
@@ -82,7 +85,7 @@ const FormVoluntario = () => {
           id="contacto"
           name="contacto"
           required
-          onChange={setPhoneNumber}
+          onChange={(e)=> setPhoneNumber(e.target.value)}
         />
         <br /><br />
 
@@ -126,7 +129,7 @@ const FormVoluntario = () => {
             cols="30"
             rows="5"
             value={comment}
-            onChange={handleComment}
+            onChange={(e)=> handleComment(e.target.value)}
           ></textarea>
           {
             hasNaughtyWord &&
@@ -140,7 +143,9 @@ const FormVoluntario = () => {
           Submeter
         </button>
       </form>
+
     </div>
+
   );
 };
 

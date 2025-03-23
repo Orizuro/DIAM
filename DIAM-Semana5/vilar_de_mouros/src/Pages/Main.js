@@ -1,13 +1,43 @@
 import './styles.css';
 import FormVoluntario from "./FormVoluntario";
+import {useNavigate} from "react-router-dom";
 
 function Main(){
+
+    const scheduleData = [
+        { date: "21 de Agosto", time: "20:00", artist: "Amália Hoje" },
+        { date: "21 de Agosto", time: "21:00", artist: "Delfins" },
+        { date: "21 de Agosto", time: "22:00", artist: "GNR" },
+        { date: "21 de Agosto", time: "23:00", artist: "The Legendary Tigerman" },
+        { date: "21 de Agosto", time: "00:00", artist: "Fogo Frio" },
+        { date: "22 de Agosto", time: "20:00", artist: "The Cult" },
+        { date: "22 de Agosto", time: "21:00", artist: "Xutos & Pontapés" },
+        { date: "22 de Agosto", time: "22:00", artist: "Soulfly" },
+        { date: "22 de Agosto", time: "23:00", artist: "Moonspell" },
+        { date: "22 de Agosto", time: "00:00", artist: "Ramp" },
+        { date: "23 de Agosto", time: "20:00", artist: "Die Antwoord" },
+        { date: "23 de Agosto", time: "21:00", artist: "Ornatos Violeta" },
+        { date: "23 de Agosto", time: "22:00", artist: "Crystal Fighters" },
+        { date: "23 de Agosto", time: "23:00", artist: "Capitão Fausto" },
+        { date: "23 de Agosto", time: "00:00", artist: "Sulfur Giant" },
+        { date: "24 de Agosto", time: "20:00", artist: "The Darkness" },
+        { date: "24 de Agosto", time: "21:00", artist: "The Libertines" },
+        { date: "24 de Agosto", time: "22:00", artist: "The Waterboys" },
+        { date: "24 de Agosto", time: "23:00", artist: "David Fonseca" },
+        { date: "24 de Agosto", time: "00:00", artist: "Vapors of Morphine" },
+    ];
 
     const scrollToSection = (id) => {
         const section = document.getElementById(id);
         if (section) {
             section.scrollIntoView({ behavior: "smooth" });
         }
+    };
+
+    const navigate = useNavigate();
+
+    const handleButtonClick = () => {
+        navigate('/voluntario');
     };
 
     return(
@@ -18,61 +48,63 @@ function Main(){
             <div id="Home">
                 <div id="nav_bar">
                     <ul>
-                        <li><a href="#Home" onClick={(e) => { e.preventDefault(); scrollToSection("Home"); }}>Página Inicial</a></li>
-                        <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection("about"); }}>Sobre</a></li>
-                        <li><a href="#lineUp" onClick={(e) => { e.preventDefault(); scrollToSection("lineUp"); }}>Cartaz</a></li>
-                        <li><a href="#volunteersForm" onClick={(e) => { e.preventDefault(); scrollToSection("volunteersForm"); }}>Voluntariado</a></li>
-                        <li><a href="#latestNews" onClick={(e) => { e.preventDefault(); scrollToSection("latestNews"); }}>Últimas Notícias</a></li>
-                        <li><a href="#contacts" onClick={(e) => { e.preventDefault(); scrollToSection("contacts"); }}>Contactos</a></li>
+                        <li><a href="#Home" onClick={(e) => {
+                            e.preventDefault();
+                            scrollToSection("Home");
+                        }}>Página Inicial</a></li>
+                        <li><a href="#about" onClick={(e) => {
+                            e.preventDefault();
+                            scrollToSection("about");
+                        }}>Sobre</a></li>
+                        <li><a href="#lineUp" onClick={(e) => {
+                            e.preventDefault();
+                            scrollToSection("lineUp");
+                        }}>Cartaz</a></li>
+                        <li><a onClick={handleButtonClick}>Voluntariado</a></li>
+                        <li><a href="#latestNews" onClick={(e) => {
+                            e.preventDefault();
+                            scrollToSection("latestNews");
+                        }}>Últimas Notícias</a></li>
+                        <li><a href="#contacts" onClick={(e) => {
+                            e.preventDefault();
+                            scrollToSection("contacts");
+                        }}>Contactos</a></li>
                         {/*<li><a href="#complaints" onClick={(e) => { e.preventDefault(); scrollToSection("complaints"); }}>Reclamações</a></li>*/}
                     </ul>
                 </div>
             </div>
             <br/>
-                
-            {/* ------------------------ Voluntariado ------------------------- */}
-
-            <div id="volunteersForm">
-                <h2> Formulário de Candidatura a Voluntário </h2>
-                <FormVoluntario/>
+            <div id="lineUp">
+                <h2> Programação da 46ª Edição do Festival </h2>
+                <section id="programacao">
+                    <div className="table-container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Artista</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {scheduleData.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.date}</td>
+                                    <td>{item.time}</td>
+                                    <td>{item.artist}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
-            <br/>
 
 
-            {/* -------------------------- Contactos -------------------------- */}
-
-            <div id ="contacts">
-                <h2> Contactos </h2>
-                <p>Email: <a href="mailto:info@festivalvilardemouros.pt">info@festivalvilardemouros.pt</a></p>
-                <p>Telefone: <a href="tel:+351 123 456 789">+351 123 456 789</a></p>
-                <p>Morada: Rua do Festival, 123, 4910-123 Vilar de Mouros</p>   
-            </div>
-            <br/>
 
 
-            {/* ------------------------- Reclamações ------------------------- */}
-            {/* extra - não é necessário ter já pronto para esta entrega */} 
-            {/*
-            <div id ="complaints">
-                <h2>Portal de Reclamações</h2>
-                <p> Bem-vindo ao portal de reclamações do Festival de Vilar de Mouros. </p>
-                <h3>Como fazer uma reclamação</h3>
-                <p> Para fazer uma reclamação, preencha o formulário abaixo com os seus dados e a sua reclamação.</p> 
-                <p>A sua reclamação será analisada pela nossa equipa que procurará dar uma resposta à sua reclamação, o mais rápido possível. </p>
-            
-            <br/>
 
-                <div id="complaintsForm">
-                    <h3>Formulário de Reclamação</h3>
-                    <form id="submitComplaint.html" method="post">
-                        ...
-                    </form>
 
-                </div>
-            </div>
-            <br/>
-            */}
-            
         </div>
 
     );
