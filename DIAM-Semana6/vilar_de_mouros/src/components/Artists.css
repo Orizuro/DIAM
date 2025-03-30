@@ -1,0 +1,11 @@
+.artistContainer {
+  padding: 4% 15%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+img {
+  cursor: pointer;
+}
