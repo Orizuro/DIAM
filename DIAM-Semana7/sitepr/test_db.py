@@ -6,7 +6,7 @@ from django.utils import timezone
 def main(): 
     listQuestions()
 
-    print('\nb. Mostrar as opções da questão em que o texto começa com “Gostas de…”:')
+    print('\nb) Mostrar as opções da questão em que o texto começa com “Gostas de…”:')
     options = listOptionsStartignWith()
 
     listOptionsStartignWithAndVoteSuperior(options)
@@ -73,4 +73,6 @@ def showMostVotedOptions():
         # Get max from the list of votes
         print("Opção mais votada: " + str(max_option))
 
-main()
+
+if __name__ == "main": 
+    main()
