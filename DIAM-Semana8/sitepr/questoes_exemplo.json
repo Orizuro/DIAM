@@ -1,0 +1,44 @@
+{
+  "questoes": [
+    {
+      "texto": "Gostas de programar?",
+      "opcoes": [
+        "Detesto!",
+        "Nem por isso",
+        "Mais ou menos",
+        "Gosto",
+        "Adoro!!!"
+      ]
+    },
+    {
+      "texto": "És de que clube?",
+      "opcoes": [
+        "Porto",
+        "Benfica",
+        "Sporting",
+        "Vitória de Setúbal",
+        "Belenenses"
+      ]
+    },
+    {
+      "texto": "Qual é a tua bebida favorita?",
+      "opcoes": [
+        "Água",
+        "Sumo",
+        "Coca-cola",
+        "Cerveja",
+        "Vinho",
+        "Whisky"
+      ]
+    },
+    {
+      "texto": "Qual é a disciplina favorita do 2º semestre?",
+      "opcoes": [
+        "DIAM",
+        "PSID",
+        "ES",
+        "IPM"
+      ]
+    }
+  ]
+}
