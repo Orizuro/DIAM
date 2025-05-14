@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status 
 from rest_framework.response import Response 
 from django.contrib.auth.models import User 
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(['POST'])
 def signup(request):
@@ -42,6 +43,9 @@ def logout_view(request):
     return Response({'message': 'Logged out successfully'})
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def user_view(request):
     print(request.user)
     return Response({'username': request.user.username})
+
+
