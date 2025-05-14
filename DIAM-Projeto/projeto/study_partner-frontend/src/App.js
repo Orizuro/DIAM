@@ -1,8 +1,9 @@
 import './App.css';
-import AuthProvider from './hooks/AuthProvider';
+import AuthProvider, { useAuth } from './hooks/AuthProvider';
 import LoginPage from './pages/Login';
 
 function App() {
+
   return (
     <div className="App">
       <AuthProvider>
