@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 import study_partner.views as views
+from rest_framework.authtoken.views import obtain_auth_token
 
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path('api/login/', views.login_view),
     path('api/logout/', views.logout_view),
     path('api/user/', views.user_view),
+    path('api/token-auth/', obtain_auth_token)
 ]

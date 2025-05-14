@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status 
 from rest_framework.response import Response 
 from django.contrib.auth.models import User 
+from rest_framework.authtoken.models import Token
 
 @api_view(['POST'])
 def signup(request):
@@ -29,7 +30,8 @@ def login_view(request):
 
     if user is not None:
         login(request, user)
-        return Response({'message': 'Logged in successfully'})
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'message': 'Logged in successfully', 'token': token.key})
     else:
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -41,4 +43,5 @@ def logout_view(request):
 
 @api_view(['GET'])
 def user_view(request):
+    print(request.user)
     return Response({'username': request.user.username})
