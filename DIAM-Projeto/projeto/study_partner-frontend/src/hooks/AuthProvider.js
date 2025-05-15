@@ -5,26 +5,48 @@ import { createContext, useContext, useEffect, useState } from "react";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem('token') || "");
-  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  const getUserFromLS = () => {
+    const loggedUser = localStorage.getItem(Constants.LS_USER_ITEM)
+    return loggedUser === null ? null : JSON.parse(loggedUser)
+  }
+
+  const [currentUser, setCurrentUser] = useState(getUserFromLS);
+  const [isLoggedIn, setLoggedIn] = useState(currentUser !== null);
+
+  console.log("current user: ", currentUser);
 
   useEffect(() => {
-    token === "" ? setLoggedIn(false) : setLoggedIn(true);
-    localStorage.setItem('token', token);
-  }, [token])
+    currentUser !== null ? setLoggedIn(true) : setLoggedIn(false);
+  }, [currentUser])
 
   const login = async (username, password) => {
-    await axios.post('http://localhost:8000/api/login/', { username, password }, { withCredentials: true })
-      .then(response => setToken(response.data.token))
+    await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true })
+      .then(response => {
+        const user = {
+          username: response.data.username, 
+          course: response.data.course, 
+          token: response.data.token
+        }
+        setCurrentUser(user);
+        localStorage.setItem(Constants.LS_USER_ITEM, JSON.stringify(user));
+      })
       .catch(err => console.log(err));
   }
 
   const logout = () => {
-    axios.get('http://localhost:8000/api/logout/');
-    setToken("");
+    try {
+      axios.get(Constants.LOGOUT_URL);
+    } catch(e) {
+      console.error(e);
+    } finally {
+      setCurrentUser(null);
+      localStorage.setItem(Constants.LS_USER_ITEM, null);
+    }
   }
 
-  return <AuthContext.Provider value={{ login, logout, isLoggedIn }}>
+
+  return <AuthContext.Provider value={{ login, logout, currentUser, isLoggedIn }}>
     {children}
   </AuthContext.Provider>
 }
