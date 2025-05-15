@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FacebookIcon, XIcon, LinkedInIcon, InstagramIcon } from './SocialIcons';
 
 function Footer() {
   const [showAuthors, setShowAuthors] = useState(false);

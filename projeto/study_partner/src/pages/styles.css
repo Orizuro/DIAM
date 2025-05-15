@@ -82,23 +82,25 @@ figcaption {
 .Footer {
   background-color: rgb(38, 39, 36);
   color: white;
-  padding: 1px;
+  padding: 10px;
   position: fixed;
   bottom:0;
   width: 100%;
 }
 
 body {
-  background-color: white;
+  background-color: rgb(215, 216, 213);;
   color: rgb(38, 39, 36);
-  padding: 1px;
+  padding: 0;
 }
 
 .Main {
-  background-color: rgb(38, 39, 36);
+  background-color: rgb(215, 216, 213);
   color: rgb(38, 39, 36);
   padding: 10px;
   margin: 1px;
+  display: flex;
+
 }
 
 .MainBox {
@@ -119,19 +121,6 @@ li {
   float: left;
 }
 
-.artitsList {
-  color: black;
-}
-
-.artitsList ul {
-  list-style-type: circle;
-  background-color: rgb(215, 216, 213);
-}
-
-.artitsList li {
-  float: none;
-  list-style-type: circle;
-}
 
 li a {
   display: block;
@@ -146,13 +135,6 @@ li a:hover {
   background-color: #111;
 }
 
-#programacao {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-}
-
 .table-container {
   width: 90%;
   max-width: 800px;
@@ -160,10 +142,6 @@ li a:hover {
   font-family: Arial, sans-serif;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 15px;
-}
 
 table {
   width: 100%;
@@ -187,13 +165,6 @@ tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-
-
-form {
-  max-width: 500px;
-  margin: 20px auto;
-  text-align: left;
-}
 
 input {
   padding: 8px;
@@ -228,6 +199,26 @@ textarea {
   gap: 5px;
 }
 
+.footer_container {
+  margin: 20px 30%;
+  border: 1px solid darkblue;
+  text-align: center;
+}
+#box_links {
+  width: 32%;
+  background-color: rgb(215, 216, 213);
+  display: inline-block;
+}
+#box_copyrights {
+  width: 32%;
+  background-color: rgb(215, 216, 213);
+  display: inline-block;
+}
+#box_socialmedia {
+  width: 32%;
+  background-color: rgb(215, 216, 213);
+  display: inline-block;
+}
 
 button {
   margin: 10px;
@@ -244,8 +235,3 @@ button:hover {
 }
 
 
-.volunteerForm {
-  background-color: rgb(215, 216, 213);
-  color: white;
-  padding: 10px;
-}
