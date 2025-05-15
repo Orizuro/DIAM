@@ -1,8 +1,8 @@
 import './App.css';
 import './styles.css'
-import Header from "./Header";
-import MainPage from "./MainPage";
-import Footer from "./Footer";
+import Header from "../components/Header";
+import HomePage from "./HomePage";
+import Footer from "../components/Footer";
 
 function ArtistsPage() {
   return null;
@@ -13,7 +13,7 @@ function App() {
   return (
       <div className="App">
         <Header />
-        <MainPage />
+        <HomePage />
         <Footer />
       </div>
   );
