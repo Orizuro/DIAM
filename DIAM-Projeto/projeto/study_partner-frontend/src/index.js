@@ -4,17 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import AuthProvider from './hooks/AuthProvider';
 import Channel from './pages/Channel';
+import Login from './pages/Login';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<App />} />
-        <Route path='/channel' element={<Channel />} />h
-      </Routes>
-    </BrowserRouter>
+
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<App />} />
+          <Route path='/channels' element={<Channel />} />
+          <Route path='/channel/:channel_id' element={<Channel />} />
+          <Route path='/login' element={<Login />} />
+          {/*NO PAGE: <Route path='*' element={} />*/}
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );
 

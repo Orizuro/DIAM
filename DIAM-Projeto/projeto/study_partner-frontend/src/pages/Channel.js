@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { WS_URL } from '../Constants';
 
 const Channel = () => {
 
-  const channelName = "gandaChannel";
+  const { channel_id } = useParams();
+
   const [message, setMessage] = useState("")
   const [messageHistory, setMessageHistory] = useState([])
 
-  const { sendJsonMessage, readyState } = useWebSocket(WS_URL + channelName + "/", {
+  const { sendJsonMessage, readyState } = useWebSocket(WS_URL + channel_id + "/", {
     onOpen: () => {
       console.log("Connected!");
       setMessage(message + "Hello from ")
@@ -34,7 +36,7 @@ const Channel = () => {
 
   return (
     <>
-      <p>THIS IS A CHANNEL, the websocket is {connectionStatus}</p>
+      <p>THIS IS A the {channel_id} CHANNEL</p>
       {
         messageHistory.map((receivedMessage) => <p>{receivedMessage}</p>)
       }
