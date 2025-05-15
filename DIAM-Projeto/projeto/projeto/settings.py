@@ -31,26 +31,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-<<<<<<< HEAD
-    'study_partner.apps.StudyPartnerConfig',
-=======
     'study_partner',
     'daphne',
     'channels',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
->>>>>>> backend
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'corsheaders',
-    'channels',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +55,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+
+
+ASGI_APPLICATION = 'projeto.asgi.application'
 
 CORS_ALLOW_CREDENTIALS = True
 
