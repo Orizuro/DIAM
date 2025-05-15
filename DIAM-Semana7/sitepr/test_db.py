@@ -1,78 +1,45 @@
-
-from django.db.models import options
 from votacao.models import Questao, Opcao
 from django.utils import timezone
+import datetime
 
-def main(): 
-    listQuestions()
+import json
 
-    print('\nb) Mostrar as opções da questão em que o texto começa com “Gostas de…”:')
-    options = listOptionsStartignWith()
+# apaga os registos nas tabelas da BD
+def delete_questions():
+    questoes = Questao.objects.all()
+    for questao in questoes:
+        questao.delete()
 
-    listOptionsStartignWithAndVoteSuperior(options)
-    last3YearsPubs()
-    calculateTotalVotes()
-    showMostVotedOptions()
+# criar questões de exemplo (com base em JSON)
+def create_questions(questions_json):
+    for questao in questions_json["questoes"]:
+        print(questao)
 
-#DONE
-def listQuestions(): 
-    print("\na) Listar todas as opções:")
-    for question in Questao.objects.all():
-       print(question) 
+        if(questao['texto'] != "És de que clube?"):
+            q = Questao.objects.create(questao_texto=questao["texto"], pub_data=timezone.now())
+        else:
+            q = Questao.objects.create(
+                questao_texto=questao["texto"], 
+                pub_data=timezone.now() - datetime.timedelta(weeks=200))
 
-#DONE
-def listOptionsStartignWith():
-    options = {}
-    filteredQuestions = Questao.objects.filter(questao_texto__startswith="Gostas de")
-    for question in filteredQuestions:
-        options[question] = question.opcao_set.all()
-        print(question.opcao_set.all())
-    return options 
+        for opcao in questao["opcoes"]:
+            q.opcao_set.create(opcao_texto=opcao, votos=0)
 
-#DONE
-def listOptionsStartignWithAndVoteSuperior(options):
-    print("\nc) Mostrar as opções com número de votos superior a 2 da questão em que o texto começa com “Gostas de…”:")
-    for _, values in options.items(): 
-        for value in values:
-            if value.votos > 2:
-                print('Opção: ' + str(value))
-
-#DONE
-def last3YearsPubs():
-    print("\nd) Mostrar uma lista das questões publicadas nos últimos 3 anos:")
-    current_year = timezone.now().year
-    for question in Questao.objects.all():
-        if(question.pub_data.year > current_year - 3):
-            print(question.questao_texto)
+# mostrar - assume que os __str__ existem nos modelos de dados
+def show_questions():
+    for questao in Questao.objects.all():
+        print(questao)
 
 
-#DONE
-def calculateTotalVotes():
-    print("\ne) Calcular e mostrar o número total de votos que estão registados na base de dados: ")
-    sum = 0
-    for option in Opcao.objects.all():
-        sum += option.votos
-    
-    print("O número total de votos é: " + str(sum))
 
-#DONE
-def showMostVotedOptions():
-    print('\nf) Percorrer todas as questões da DB e, para cada uma, mostrar o texto da questão e o da opção que tiver mais votos:')
+## main ##
+    #delete_questions()
 
-    for question in Questao.objects.all():
-        print(question.questao_texto)
+with open('questoes_exemplo.json', encoding='utf-8') as json_file:
+    QUESTOES = json.load(json_file)
 
-        # Tranform Option into list of votes
-        max_vote = 0
-        max_option = None
-        for question in question.opcao_set.all():
-            if(question.votos > max_vote):
-                max_vote = question.votos
-                max_option = question.opcao_texto
-        
-        # Get max from the list of votes
-        print("Opção mais votada: " + str(max_option))
+delete_questions()
 
+create_questions(QUESTOES)
 
-if __name__ == "main": 
-    main()
+show_questions()

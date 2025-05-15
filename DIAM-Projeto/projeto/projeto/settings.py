@@ -31,7 +31,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+<<<<<<< HEAD
     'study_partner.apps.StudyPartnerConfig',
+=======
+    'study_partner',
+    'daphne',
+    'channels',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+>>>>>>> backend
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
