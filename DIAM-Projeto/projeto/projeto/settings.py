@@ -31,12 +31,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'study_partner',
     'daphne',
     'channels',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'study_partner.apps.StudyPartnerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
