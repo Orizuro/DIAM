@@ -1,8 +1,10 @@
-export const WS_URL = 'ws://127.0.0.1:8000/channel/'
+export const BACKEND_HOST = '192.168.1.84:8000'
 
-export const LOGIN_URL = 'http://localhost:8000/api/login/'
-export const LOGOUT_URL = 'http://localhost:8000/api/logout/'
-export const SIGNUP_URL = 'http://localhost:8000/api/signup/'
+export const WS_URL = 'ws://' + BACKEND_HOST + '/channel/'
+
+export const LOGIN_URL = 'http://'+ BACKEND_HOST + '/api/login/'
+export const LOGOUT_URL = 'http://' + BACKEND_HOST + '/api/logout/'
+export const SIGNUP_URL = 'http://' + BACKEND_HOST + '/api/signup/'
 
 // LocalStorage
 export const LS_USER_ITEM = 'user'
