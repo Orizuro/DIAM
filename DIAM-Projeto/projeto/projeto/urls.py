@@ -27,9 +27,7 @@ urlpatterns = [
     path('api/login/', views.login_view),
     path('api/logout/', views.logout_view),
     path('api/user/', views.user_view),
+    path('api/check_channel/', views.check_channel),
     path('api/token-auth/', obtain_auth_token),
 ]
 
-websocket_urlpatterns = [
-    path('', consumers.ChatConsumer.as_asgi()),
-]

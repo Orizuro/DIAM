@@ -48,4 +48,11 @@ def user_view(request):
     print(request.user)
     return Response({'username': request.user.username})
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def check_channel(request):
+    channel_code = request.POST["channel_id"]
+    print(channel_code)
+
+    # if Channel
 
