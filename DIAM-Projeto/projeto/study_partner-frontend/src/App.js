@@ -1,5 +1,5 @@
 import './App.css';
-import AuthProvider, { useAuth } from './hooks/AuthProvider';
+import AuthProvider from './hooks/AuthProvider';
 import LoginPage from './pages/Login';
 
 function App() {
