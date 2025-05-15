@@ -1,22 +1,12 @@
 from channels.generic.websocket import WebsocketConsumer
-from channels.generic.websocket import JsonWebsocketConsumer
-from asgiref.sync import async_to_sync
-import json
 
-class ChatConsumer(JsonWebsocketConsumer):
+class ChatConsumer(WebsocketConsumer):
     def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["channel_name"]
+        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
 
         async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
         self.accept()
-
-        self.send_json(
-            {
-                "type": "welcome_message",
-                "message": "Hey there! You've successfully connected!",
-            }
-        )
 
     def disconnect(self):
         async_to_sync(self.channel_layer.group_discard)(self.room_group_name, self.channel_name)

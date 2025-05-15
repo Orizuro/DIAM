@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/AuthProvider";
 
 const Login = () => {
@@ -6,6 +6,12 @@ const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(auth.isLoggedIn);
+
+
+  useEffect(() => {
+    setIsLoggedIn(auth.isLoggedIn)
+  }, [auth.isLoggedIn])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +29,7 @@ const Login = () => {
     <div className="container">
       <h2>Login</h2>
       {
-        !auth.isLoggedIn ?
+        !isLoggedIn ?
           <form onSubmit={handleSubmit}>
             <label>Username: </label><input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
             <label>Password: </label><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
