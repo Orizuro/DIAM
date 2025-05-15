@@ -31,6 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
     'study_partner.apps.StudyPartnerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,10 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'corsheaders',
-    'channels',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,18 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Channels
+ASGI_APPLICATION = 'projeto.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)]
+        }
+    }
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -85,7 +98,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'projeto.wsgi.application'
+# WSGI_APPLICATION = 'projeto.wsgi.application'
 
 
 # Database

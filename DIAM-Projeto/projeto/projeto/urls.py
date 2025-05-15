@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path
 import study_partner.views as views
 from rest_framework.authtoken.views import obtain_auth_token
 from . import consumers 
@@ -28,9 +28,8 @@ urlpatterns = [
     path('api/logout/', views.logout_view),
     path('api/user/', views.user_view),
     path('api/token-auth/', obtain_auth_token),
-    path("<str:room_name>/", views.room, name="room"),
 ]
 
 websocket_urlpatterns = [
-    re_path(r"ws/chat/(?P<room_name>\w+)/$", consumers.ChatConsumer.as_asgi()),
+    path('', consumers.ChatConsumer.as_asgi()),
 ]

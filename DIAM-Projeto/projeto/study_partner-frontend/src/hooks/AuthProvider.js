@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import * as Constants from '../Constants'
 
 
 const AuthContext = createContext();
@@ -14,13 +15,13 @@ const AuthProvider = ({ children }) => {
   }, [token])
 
   const login = async (username, password) => {
-    await axios.post('http://localhost:8000/api/login/', { username, password }, { withCredentials: true })
+    await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true })
       .then(response => setToken(response.data.token))
       .catch(err => console.log(err));
   }
 
   const logout = () => {
-    axios.get('http://localhost:8000/api/logout/');
+    axios.get(Constants.LOGOUT_URL);
     setToken("");
   }
 
