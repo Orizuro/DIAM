@@ -1,9 +1,11 @@
-import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
+import React, {useState} from 'react';
+
 
 const QA = () => {
-    const faqItems = [
+
+    const [activeIndex, setActiveIndex] = useState(null);
+
+    const QAItems = [
         {
             question: "O site tem algum custo para os utilizadores?",
             answer: "Não, o site é completamente gratuito. Todos os recursos, materiais e funcionalidades estão disponíveis sem qualquer custo para os estudantes."
@@ -19,26 +21,49 @@ const QA = () => {
         {
             question: "Como posso denunciar um comportamento inadequado?",
             answer: "Comportamentos inadequados que violem o Código de Conduta devem ser reportados para o email suporte@studypartner.com. Pode optar por manter o seu anonimato."
+        },
+        {
+            question: "Não encontrou a resposta que procurava?",
+            answer: "contacts-link"
         }
+
     ];
+
+    const toggleAnswer = (index) => {
+        setActiveIndex(activeIndex === index ? null : index);
+    };
+
+
+    const renderAnswer = (answer, index) => {
+        if (answer === "contacts-link") {
+            return (
+                <p>
+                    Contacte-nos através da nossa página de{' '}
+                    <a href="#" onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = '/Contactos';
+                    }}>
+                        Contactos
+                    </a>
+                    .
+                </p>
+            );
+        }
+        return <p>{answer}</p>;
+    };
 
     return (
         <div className="QA">
-            <Header />
             <div className="MainBox">
                 <h1>Perguntas Frequentes</h1>
 
-                {faqItems.map((item, index) => (
-                    <div key={index} style={{ marginBottom: '20px' }}>
+                {QAItems.map((item, index) => (
+                    <div key={index} style={{ marginBottom: '20px', cursor: 'pointer' }} onClick={() => toggleAnswer(index)}>
                         <h3>{item.question}</h3>
-                        <p>{item.answer}</p>
+                        {activeIndex === index && renderAnswer(item.answer, index)}
                     </div>
                 ))}
-
-                <h2>Não encontrou a resposta que procurava?</h2>
-                <p>Contacte-nos através da nossa página de <a href="/contacts">contactos</a>.</p>
             </div>
-            <Footer />
         </div>
     );
 };

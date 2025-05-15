@@ -81,12 +81,15 @@ figcaption {
 
 .Footer {
   background-color: rgb(38, 39, 36);
-  color: rgb(38, 39, 36);
+  color: white;
   padding: 1px;
+  position: fixed;
+  bottom:0;
+  width: 100%;
 }
 
 body {
-  background-color: rgb(38, 39, 36);
+  background-color: white;
   color: rgb(38, 39, 36);
   padding: 1px;
 }
