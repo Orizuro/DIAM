@@ -61,5 +61,3 @@ def get_messages(request):
     
     return JsonResponse(list(data), safe=False)
 
-    # if Channel
-
