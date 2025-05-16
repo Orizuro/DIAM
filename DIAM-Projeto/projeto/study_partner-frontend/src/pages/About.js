@@ -1,11 +1,8 @@
 import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
 
 const About = () => {
     return (
         <div className="About">
-            <Header />
             <div className="MainBox">
                 <h1>Sobre o StudyPartner</h1>
 
@@ -17,7 +14,6 @@ const About = () => {
                 </p>
 
             </div>
-            <Footer />
         </div>
     );
 };

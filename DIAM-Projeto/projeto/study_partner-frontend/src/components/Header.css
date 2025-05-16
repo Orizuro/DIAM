@@ -1,0 +1,39 @@
+.navbar {
+    display: flex;
+    padding: 1rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-weight: bold;
+
+}
+
+.nav-link:hover {
+        color: #ffffff;
+}
+
+.Header {
+    background-color: white;
+    color: rgb(38, 39, 36);
+    padding: 1px;
+    display: flex;
+    justify-content: space-between;
+    top: 0;
+    position: sticky;
+    z-index: 10;
+}
+
+.header-logo {
+    height: 60px; /* ou qualquer tamanho que desejar */
+    width: auto; /* mantém a proporção da imagem */
+    margin: 5px 10px; /* ajuste as margens conforme necessário */
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './Footer.css'
 function Footer() {
   const [showAuthors, setShowAuthors] = useState(false);
 
@@ -8,11 +8,21 @@ function Footer() {
   };
 
   return (
-    <div className="Footer" onClick={handleClick} style={{ cursor: 'pointer' }}>
-      <p style={{ color: 'white', fontSize: '0.8em', fontFamily: 'Arial, sans-serif', textAlign: 'center' }}>
-        {showAuthors ? 'Autores: Alexandre, Catarina, Misael' : '© 2025 StudyPartner'}
-      </p>
-    </div>
+      <div className="Footer" onClick={handleClick} style={{ cursor: 'pointer' }}>
+          <div className="FooterContent">
+              {/* Left links */}
+              <div className="FooterLinks">
+                  <a href="#sobre" className="footer-link">Sobre</a>
+                  <a href="#contactos" className="footer-link">Contactos</a>
+                  <a href="#faq" className="footer-link">Perguntas Frequentes</a>
+              </div>
+
+              {/* Right/center text */}
+              <p className="FooterText">
+                  {showAuthors ? 'Autores: Alexandre, Catarina, Misael' : '© 2025 StudyPartner'}
+              </p>
+          </div>
+      </div>
   );
 }
 

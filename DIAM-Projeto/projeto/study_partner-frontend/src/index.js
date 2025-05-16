@@ -10,6 +10,9 @@ import Login from './pages/Login';
 import Contacts from './pages/Contacts';
 import QA from './pages/QA';
 import PrivateRoute from './components/PrivateRoute';
+import About from "./pages/About";
+import Layout from "./components/Layout";
+import HomePage from "./pages/HomePage";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,18 +21,23 @@ root.render(
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<App />} />
-          <Route path='/contacts' element={<Contacts />} />
-          <Route path='/qa' element={<QA />} />
-          {/*<Route path='/community-rules' element={<CommunityRules />} />*/}
-          <Route path='/channels' element={<Channel />} />
-          <Route path='/channel/:channel_id' element={
-            <PrivateRoute>
-              <Channel />
-            </PrivateRoute>
-          } />
-          <Route path='/login' element={<Login />} />
-          {/*NO PAGE: <Route path='*' element={} />*/}
+          {/* Layout wrapper route */}
+          <Route path='/' element={<Layout />}>
+            {/* These routes render inside <Outlet /> in Layout */}
+            <Route index element={<HomePage />} />
+            <Route path='contacts' element={<Contacts />} />
+            <Route path='about' element={<About />} />
+            <Route path='qa' element={<QA />} />
+            <Route path='channels' element={<Channel />} />
+            <Route path='channel/:channel_id' element={
+              <PrivateRoute>
+                <Channel />
+              </PrivateRoute>
+            } />
+          </Route>
+
+          {/* Route outside layout (e.g. Login page doesn't use Layout) */}
+          <Route path='login' element={<Login />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
