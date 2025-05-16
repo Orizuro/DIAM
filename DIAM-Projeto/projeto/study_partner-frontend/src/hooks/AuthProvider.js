@@ -13,20 +13,32 @@ const AuthProvider = ({ children }) => {
   }
 
   const [currentUser, setCurrentUser] = useState(getUserFromLS);
-  const [isLoggedIn, setLoggedIn] = useState(currentUser !== null);
-
-  console.log("current user: ", currentUser);
+  const [isAuthenticated, setIsAuthenticaded] = useState(currentUser !== null);
 
   useEffect(() => {
-    currentUser !== null ? setLoggedIn(true) : setLoggedIn(false);
+    currentUser !== null ? setIsAuthenticaded(true) : setIsAuthenticaded(false);
   }, [currentUser])
+
+  axios.interceptors.request.use(
+    (config) => {
+      if (isAuthenticated) {
+        config.headers.Authorization = `Token ${currentUser.token}`
+      }
+
+      return config;
+    },
+
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
   const login = async (username, password) => {
     await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true })
       .then(response => {
         const user = {
-          username: response.data.username, 
-          course: response.data.course, 
+          username: response.data.username,
+          course: response.data.course,
           token: response.data.token
         }
         setCurrentUser(user);
@@ -38,7 +50,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     try {
       axios.get(Constants.LOGOUT_URL);
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     } finally {
       setCurrentUser(null);
@@ -47,7 +59,7 @@ const AuthProvider = ({ children }) => {
   }
 
 
-  return <AuthContext.Provider value={{ login, logout, currentUser, isLoggedIn }}>
+  return <AuthContext.Provider value={{ login, logout, currentUser, isAuthenticated }}>
     {children}
   </AuthContext.Provider>
 }

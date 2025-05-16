@@ -9,6 +9,7 @@ import Channel from './pages/Channel';
 import Login from './pages/Login';
 import Contacts from './pages/Contacts';
 import QA from './pages/QA';
+import PrivateRoute from './components/PrivateRoute';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -22,7 +23,11 @@ root.render(
           <Route path='/qa' element={<QA />} />
           {/*<Route path='/community-rules' element={<CommunityRules />} />*/}
           <Route path='/channels' element={<Channel />} />
-          <Route path='/channel/:channel_id' element={<Channel />} />
+          <Route path='/channel/:channel_id' element={
+            <PrivateRoute>
+              <Channel />
+            </PrivateRoute>
+          } />
           <Route path='/login' element={<Login />} />
           {/*NO PAGE: <Route path='*' element={} />*/}
         </Routes>

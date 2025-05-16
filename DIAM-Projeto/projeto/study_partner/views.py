@@ -1,4 +1,6 @@
+from .models import Channel, Message
 from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status 
@@ -48,4 +50,16 @@ def user_view(request):
     print(request.user)
     return Response({'username': request.user.username})
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_messages(request):
+    channel_code = request.GET["channel_id"]
+    channel = Channel.objects.get(uc=channel_code)
+    messages = Message.objects.filter(to=channel)
+
+    data = list(messages.values())
+    
+    return JsonResponse(list(data), safe=False)
+
+    # if Channel
 

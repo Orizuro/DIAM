@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, re_path
 import study_partner.views as views
 from rest_framework.authtoken.views import obtain_auth_token
-from . import consumers 
 
 
 urlpatterns = [
@@ -27,10 +26,7 @@ urlpatterns = [
     path('api/login/', views.login_view),
     path('api/logout/', views.logout_view),
     path('api/user/', views.user_view),
+    path('api/messages/', views.get_messages),
     path('api/token-auth/', obtain_auth_token),
-    path("<str:room_name>/", views.room, name="room"),
 ]
 
-websocket_urlpatterns = [
-    re_path(r"ws/chat/(?P<room_name>\w+)/$", consumers.ChatConsumer.as_asgi()),
-]
