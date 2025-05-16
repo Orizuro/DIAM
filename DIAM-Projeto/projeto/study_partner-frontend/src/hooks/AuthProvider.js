@@ -20,17 +20,13 @@ const AuthProvider = ({ children }) => {
   }, [currentUser])
 
   axios.interceptors.request.use(
-    (config) => {
-      if (isAuthenticated) {
-        config.headers.Authorization = `Token ${currentUser.token}`
-      }
-
-      return config;
-    },
-
-    (error) => {
-      return Promise.reject(error);
-    }
+      (config) => {
+        if (currentUser && currentUser.token) {
+          config.headers.Authorization = `Token ${currentUser.token}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
   );
 
   const login = async (username, password) => {
@@ -46,6 +42,19 @@ const AuthProvider = ({ children }) => {
       })
       .catch(err => console.log(err));
   }
+  const signup = async (username, password) => {
+    try {
+      const response = await axios.post(Constants.SIGNUP_URL, { username, password }, { withCredentials: true });
+      // Assuming response.data.message exists on success
+      return { success: true, message: response.data.message };
+    } catch (error) {
+      // Extract error message from backend if exists
+      const errMsg =
+          error.response?.data?.error ||
+          "Erro ao registrar usuário. Tente novamente.";
+      return { success: false, message: errMsg };
+    }
+  };
 
   const logout = () => {
     try {
@@ -59,9 +68,11 @@ const AuthProvider = ({ children }) => {
   }
 
 
-  return <AuthContext.Provider value={{ login, logout, currentUser, isAuthenticated }}>
-    {children}
-  </AuthContext.Provider>
+  return (
+      <AuthContext.Provider value={{ login, logout, signup, currentUser, isAuthenticated }}>
+        {children}
+      </AuthContext.Provider>
+  );
 }
 
 export default AuthProvider;

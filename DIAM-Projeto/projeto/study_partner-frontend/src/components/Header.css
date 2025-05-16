@@ -1,3 +1,15 @@
+.Header {
+    background-color: white;
+    color: rgb(38, 39, 36);
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    top: 0;
+    position: sticky;
+    z-index: 10;
+}
+
 .navbar {
     display: flex;
     padding: 1rem;
@@ -14,26 +26,52 @@
 .nav-link {
     text-decoration: none;
     font-weight: bold;
-
 }
 
 .nav-link:hover {
-        color: #ffffff;
-}
-
-.Header {
-    background-color: white;
-    color: rgb(38, 39, 36);
-    padding: 1px;
-    display: flex;
-    justify-content: space-between;
-    top: 0;
-    position: sticky;
-    z-index: 10;
+    color: #ffffff;
 }
 
 .header-logo {
-    height: 60px; /* ou qualquer tamanho que desejar */
-    width: auto; /* mantém a proporção da imagem */
-    margin: 5px 10px; /* ajuste as margens conforme necessário */
+    height: 60px;
+    width: auto;
+    margin: 5px 10px;
+}
+
+.login-button-container {
+    margin-left: 10px;
+}
+
+.login-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+.user-name {
+    margin-right: 10px;
+    font-weight: bold;
+    color: rgb(38, 39, 36);
+}
+
+.logout-button {
+    background-color: transparent;
+    border: 1px solid rgb(38, 39, 36);
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: rgb(38, 39, 36);
+}
+
+.logout-button:hover {
+    background-color: rgb(38, 39, 36);
+    color: white;
 }
