@@ -9,8 +9,8 @@ function Header() {
           <nav className="navbar ">
               <ul className="nav-links">
                   <li><Link to="/" className="nav-link">Pagina Inicial</Link></li>
-                  <li><Link to="/sobre" className="nav-link">Sobre</Link></li>
-                  <li><Link to="/regras-de-comunidade" className="nav-link">Regras de Comunidade</Link></li>
+                  <li><Link to="/about" className="nav-link">Sobre</Link></li>
+                  <li><Link to="/rules" className="nav-link">Regras de Comunidade</Link></li>
                   <li><Link to="/sessoes-de-estudo" className="nav-link">Sessões de Estudo</Link></li>
               </ul>
           </nav>

@@ -14,10 +14,8 @@ function App() {
 
   return (
       <div className="App">
-        <Header />
         <HomePage/>
         <Contacts />
-        <Footer />
       </div>
   );
 }

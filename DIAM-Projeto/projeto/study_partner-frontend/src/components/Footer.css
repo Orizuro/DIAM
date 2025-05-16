@@ -38,3 +38,7 @@
     font-family: Arial, sans-serif;
     text-align: center;
 }
+
+.Footer ul {
+    background-color:rgb(0, 0, 0);
+}

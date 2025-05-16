@@ -13,6 +13,7 @@ import PrivateRoute from './components/PrivateRoute';
 import About from "./pages/About";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
+import CommunityRules from "./pages/CommunityRules";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,14 +22,13 @@ root.render(
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Layout wrapper route */}
           <Route path='/' element={<Layout />}>
-            {/* These routes render inside <Outlet /> in Layout */}
             <Route index element={<HomePage />} />
             <Route path='contacts' element={<Contacts />} />
             <Route path='about' element={<About />} />
             <Route path='qa' element={<QA />} />
             <Route path='channels' element={<Channel />} />
+            <Route path='rules' element={<CommunityRules />}/>
             <Route path='channel/:channel_id' element={
               <PrivateRoute>
                 <Channel />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Footer.css'
+import {Link} from "react-router-dom";
 function Footer() {
   const [showAuthors, setShowAuthors] = useState(false);
 
@@ -11,11 +12,11 @@ function Footer() {
       <div className="Footer" onClick={handleClick} style={{ cursor: 'pointer' }}>
           <div className="FooterContent">
               {/* Left links */}
-              <div className="FooterLinks">
-                  <a href="#sobre" className="footer-link">Sobre</a>
-                  <a href="#contactos" className="footer-link">Contactos</a>
-                  <a href="#faq" className="footer-link">Perguntas Frequentes</a>
-              </div>
+              <ul className="FooterLinks">
+                  <li><Link to="/about" className="nav-link">Sobre</Link></li>
+                  <li><Link to="/contacts" className="nav-link">Contactos</Link></li>
+                  <li><Link to="/qa" className="nav-link">Perguntas Frequentes</Link></li>
+              </ul>
 
               {/* Right/center text */}
               <p className="FooterText">
