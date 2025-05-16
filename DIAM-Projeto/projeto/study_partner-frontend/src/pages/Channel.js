@@ -1,14 +1,18 @@
-import axios from 'axios';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { CHECK_CHANNEL_URL, WS_URL } from '../Constants';
+import { WS_URL } from '../Constants';
+import { useAuth } from '../hooks/AuthProvider';
 
 const Channel = () => {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  if (!auth.isLoggedIn) {
+    navigate("/")
+  }
 
   const { channel_id } = useParams();
-
-  axios.post(CHECK_CHANNEL_URL, {channel_id}, {withCredentials: true})
 
   const [message, setMessage] = useState("")
   const [messageHistory, setMessageHistory] = useState([])

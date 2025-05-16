@@ -1,4 +1,4 @@
-from channels.generic.websocket import WebsocketConsumer
+from study_partner.models import Channel
 from channels.generic.websocket import JsonWebsocketConsumer
 from asgiref.sync import async_to_sync
 import json
@@ -8,15 +8,21 @@ class ChatConsumer(JsonWebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["channel_code"]
         self.room_group_name = f"chat_{self.room_name}"
 
+        if not Channel.objects.filter().exists(): 
+            self.send_json({
+                "type": "error",
+                "message":  f"This channel '{self.room_name}' does not exists",
+            })
+            return
+
         async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
+
         self.accept()
 
-        self.send_json(
-            {
-                "type": "welcome_message",
-                "message": "Hey there! You've successfully connected!",
-            }
-        )
+        self.send_json({
+            "type": "welcome_message",
+            "message": "Hey there! You've successfully connected!",
+        })
 
     def disconnect(self):
         async_to_sync(self.channel_layer.group_discard)(self.room_group_name, self.channel_name)
