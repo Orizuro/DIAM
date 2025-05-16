@@ -2,7 +2,7 @@ import React from 'react';
 
 const Contacts = () => {
     return (
-        <div className="MainBox">
+        <div className="MainBox" style={{height:'85vh'}}>
             <h1>Contactos</h1>
             <p>
                 <strong>Telefone:</strong> +351 217 903 005 <br />

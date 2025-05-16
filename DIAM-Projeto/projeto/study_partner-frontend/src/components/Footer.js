@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-
+import './Footer.css'
+import {Link} from "react-router-dom";
 function Footer() {
   const [showAuthors, setShowAuthors] = useState(false);
 
@@ -8,11 +9,21 @@ function Footer() {
   };
 
   return (
-    <div className="Footer" onClick={handleClick} style={{ cursor: 'pointer' }}>
-      <p style={{ color: 'white', fontSize: '0.8em', fontFamily: 'Arial, sans-serif', textAlign: 'center' }}>
-        {showAuthors ? 'Autores: Alexandre, Catarina, Misael' : '© 2025 StudyPartner'}
-      </p>
-    </div>
+      <div className="Footer" onClick={handleClick} style={{ cursor: 'pointer' }}>
+          <div className="FooterContent">
+              {/* Left links */}
+              <ul className="FooterLinks">
+                  <li><Link to="/about" className="nav-link">Sobre</Link></li>
+                  <li><Link to="/contacts" className="nav-link">Contactos</Link></li>
+                  <li><Link to="/qa" className="nav-link">Perguntas Frequentes</Link></li>
+              </ul>
+
+              {/* Right/center text */}
+              <p className="FooterText">
+                  {showAuthors ? 'Autores: Alexandre, Catarina, Misael' : '© 2025 StudyPartner'}
+              </p>
+          </div>
+      </div>
   );
 }
 
