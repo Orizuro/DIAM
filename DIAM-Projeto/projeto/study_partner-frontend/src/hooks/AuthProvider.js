@@ -13,11 +13,25 @@ const AuthProvider = ({ children }) => {
   }
 
   const [currentUser, setCurrentUser] = useState(getUserFromLS);
-  const [isLoggedIn, setLoggedIn] = useState(currentUser !== null);
+  const [isAuthenticated, setIsAuthenticaded] = useState(currentUser !== null);
 
   useEffect(() => {
-    currentUser !== null ? setLoggedIn(true) : setLoggedIn(false);
+    currentUser !== null ? setIsAuthenticaded(true) : setIsAuthenticaded(false);
   }, [currentUser])
+
+  axios.interceptors.request.use(
+    (config) => {
+      if (isAuthenticated) {
+        config.headers.Authorization = `Token ${currentUser.token}`
+      }
+
+      return config;
+    },
+
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
   const login = async (username, password) => {
     await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true })
@@ -45,7 +59,7 @@ const AuthProvider = ({ children }) => {
   }
 
 
-  return <AuthContext.Provider value={{ login, logout, currentUser, isLoggedIn }}>
+  return <AuthContext.Provider value={{ login, logout, currentUser, isAuthenticated }}>
     {children}
   </AuthContext.Provider>
 }
