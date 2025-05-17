@@ -37,7 +37,7 @@ class ChatConsumer(JsonWebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
+        message = text_data_json["content"]
 
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
@@ -53,7 +53,7 @@ class ChatConsumer(JsonWebsocketConsumer):
         channel = Channel.objects.get(uc=self.room_name)
 
         # Create a new message 
-        msg = Message(user=user, to=channel, content=message)
+        msg = Message(sender=user, to=channel, content=message)
 
         # Save in the database
         msg.save()

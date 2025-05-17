@@ -20,7 +20,7 @@
     "react-calendar": "^5.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "5.0.1",
     "react-use-websocket": "^4.13.0",
     "react-use-websockets": "^3.4.1",
     "react-websockets": "^1.0.0",
