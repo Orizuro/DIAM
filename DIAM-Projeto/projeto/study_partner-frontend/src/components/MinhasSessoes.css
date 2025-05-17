@@ -1,0 +1,44 @@
+.minhas-sessoes-wrapper {
+    padding-bottom: 2rem ;
+}
+
+.intro-text {
+    margin-bottom: 3rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #222;
+
+}
+
+.minhas-sessoes-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.minhas-sessoes-column {
+    flex: 1;
+    text-align: center;
+}
+
+.vertical-divider {
+    width: 4px;
+    background-color: #444;
+    border-radius: 4px;
+}
+
+.minhas-sessoes-column h3 {
+    font-size: 1.25rem;
+    text-align: center;
+}
+.react-calendar {
+    margin: 1rem auto;
+    max-width: 90%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    background-color: #eee;;
+}
+.react-calendar__tile {
+    background-color: #868686;
+}

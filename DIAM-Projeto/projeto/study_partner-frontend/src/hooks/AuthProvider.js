@@ -30,18 +30,23 @@ const AuthProvider = ({ children }) => {
   );
 
   const login = async (username, password) => {
-    await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true })
-      .then(response => {
-        const user = {
-          username: response.data.username,
-          course: response.data.course,
-          token: response.data.token
-        }
-        setCurrentUser(user);
-        localStorage.setItem(Constants.LS_USER_ITEM, JSON.stringify(user));
-      })
-      .catch(err => console.log(err));
-  }
+    try {
+      const response = await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true });
+
+      const user = {
+        username: response.data.username,
+        course: response.data.course,
+        token: response.data.token
+      };
+
+      setCurrentUser(user);
+      localStorage.setItem(Constants.LS_USER_ITEM, JSON.stringify(user));
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
   const signup = async (username, password) => {
     try {
       const response = await axios.post(Constants.SIGNUP_URL, { username, password }, { withCredentials: true });

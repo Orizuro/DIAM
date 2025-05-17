@@ -14,6 +14,7 @@ import About from "./pages/About";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import CommunityRules from "./pages/CommunityRules";
+import StudySessions from "./pages/StudySessions";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,6 +30,7 @@ root.render(
             <Route path='qa' element={<QA />} />
             <Route path='channels' element={<Channel />} />
             <Route path='rules' element={<CommunityRules />}/>
+            <Route path='studysessions' element={<StudySessions />}/>
             <Route path='channel/:channel_id' element={
               <PrivateRoute>
                 <Channel />

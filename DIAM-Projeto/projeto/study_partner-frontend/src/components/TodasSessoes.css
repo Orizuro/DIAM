@@ -1,0 +1,13 @@
+.intro-text {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
