@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './pages/App';
+import './pages/styles.css'
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthProvider from './hooks/AuthProvider';
@@ -14,6 +14,7 @@ import About from "./pages/About";
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import CommunityRules from "./pages/CommunityRules";
+import ErrorPage from "./pages/Error";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -38,6 +39,13 @@ root.render(
 
           {/* Route outside layout (e.g. Login page doesn't use Layout) */}
           <Route path='login' element={<Login />} />
+          <Route path='*' element={
+            <ErrorPage
+              code="404"
+              title="Page Not Found"
+              message="The page you're looking for doesn't exist."
+            />
+          } />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

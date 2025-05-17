@@ -1,10 +1,9 @@
 import axios from 'axios';
 import './Channel.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { getMessagesURL, WebSocketMessageType, WS_URL } from '../../Constants';
-import { Alert } from '@mui/material';
+import { CREATE_SESSION_URL, CREATE_UC_URL, DELETE_UC_URL, getMessagesURL, WebSocketMessageType, WS_URL } from '../../Constants';
 import { useAuth } from '../../hooks/AuthProvider';
 
 const Channel = () => {
@@ -12,16 +11,14 @@ const Channel = () => {
   const auth = useAuth();
   const currentUsername = auth.currentUser.username;
 
-  let alertSeverity = "error";
-
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const sendMessage = () => {
     if (!input.trim()) return;
-    sendJsonMessage({"type": WebSocketMessageType.MESSAGE, "content": input, "sender": currentUsername});
-    setMessages([...messages, {sender: currentUsername, content: input }]);
+    sendJsonMessage({ "type": WebSocketMessageType.MESSAGE, "content": input, "sender": currentUsername });
+    setMessages([...messages, { sender: currentUsername, content: input }]);
     setInput('');
   };
 
@@ -35,14 +32,13 @@ const Channel = () => {
         .then(data => setMessages(data))
         .then(() => {
           setIsLoading(false);
-          alertSeverity = "success";
         })
         .catch(error => console.error(error));
     },
 
-    onClose: () => {
+    onClose: (e) => {
+      console.log(e);
       setIsLoading(false);
-      alertSeverity = "error";
     },
 
     onMessage: (e) => {
@@ -53,7 +49,7 @@ const Channel = () => {
           break;
 
         case WebSocketMessageType.MESSAGE:
-          setMessages([...messages, {sender: data.sender, content:data.message}]);
+          setMessages([...messages, { sender: data.sender, content: data.message }]);
           break;
 
         default:
@@ -62,8 +58,6 @@ const Channel = () => {
       }
     }
   });
-
-  console.log(messages)
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -99,7 +93,6 @@ const Channel = () => {
           <button onClick={sendMessage}>Send</button>
         </div>
       </div>
-      <Alert severity={alertSeverity}></Alert>
     </>
   );
 }
