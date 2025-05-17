@@ -128,18 +128,29 @@ def create_uc(request):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        # Create UC
         uc = Uc.objects.create(
             code=code,
             name=name,
             description=description
         )
 
+        # Create corresponding Channel (OneToOne)
+        Channel.objects.create(
+            uc=uc,
+            name=f"Canal {uc.name}",
+            description=f"Discussões sobre {uc.name}"
+        )
+
         return Response(
-            {"message": "UC created successfully!", "uc": {
-                "code": uc.code,
-                "name": uc.name,
-                "description": uc.description
-            }},
+            {
+                "message": "UC and Channel created successfully!",
+                "uc": {
+                    "code": uc.code,
+                    "name": uc.name,
+                    "description": uc.description
+                }
+            },
             status=status.HTTP_201_CREATED
         )
 
@@ -164,6 +175,25 @@ def delete_uc(request):
         uc.delete()
 
         return Response({"message": "UC deleted successfully!"})
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_ucs(request):
+    try:
+        ucs = Uc.objects.all()
+        data = []
+
+        for uc in ucs:
+            uc_data = {
+                "code": uc.code,
+                "name": uc.name,
+                "description": uc.description,
+            }
+            data.append(uc_data)
+
+        return Response({"ucs": data}, status=status.HTTP_200_OK)
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

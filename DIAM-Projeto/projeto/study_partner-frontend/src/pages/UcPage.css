@@ -1,0 +1,27 @@
+.react-calendar {
+    margin: 1rem auto;
+    max-width: 90%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    background-color: #eee;;
+}
+.react-calendar__tile {
+    background-color: #868686;
+}
+.chat-with-calendar-container {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.calendar-section {
+    flex: 1;
+    text-align: center;
+}
+
+.chat-section {
+    flex: 1;
+    flex-direction: column;
+}
+

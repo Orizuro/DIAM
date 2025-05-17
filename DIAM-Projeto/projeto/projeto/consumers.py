@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user
-from study_partner.models import Channel, Message
+from study_partner.models import Channel, Message, Student
 from study_partner.constants import WebSocketMessageType
 from channels.generic.websocket import JsonWebsocketConsumer
 from asgiref.sync import async_to_sync
@@ -44,21 +44,23 @@ class ChatConsumer(JsonWebsocketConsumer):
             self.room_group_name, {"type": "chat.message", "message": message}
         )
 
-    # Receive message from room group
     def chat_message(self, event):
         message = event["message"]
+        user = self.scope["user"]
 
-        user = self.scope["user"] 
+        # Get the corresponding Student instance
+        try:
+            student = Student.objects.get(user=user)
+        except Student.DoesNotExist:
+            # Optional: handle the case where Student is not found
+            return  # or send error, or close connection
 
         channel = Channel.objects.get(uc=self.room_name)
 
-        # Create a new message 
-        msg = Message(sender=user, to=channel, content=message)
-
-        # Save in the database
+        # Now create the Message with the Student instance
+        msg = Message(sender=student, to=channel, content=message)
         msg.save()
 
-        # Send message to WebSocket
         self.send(
             text_data=json.dumps({"type": WebSocketMessageType.MESSAGE, "message": message})
         )

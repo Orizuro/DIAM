@@ -16,6 +16,7 @@ import HomePage from "./pages/HomePage";
 import CommunityRules from "./pages/CommunityRules";
 import ErrorPage from "./pages/Error";
 import StudySessions from "./pages/StudySessions";
+import UcPage from "./pages/UcPage";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,12 +30,12 @@ root.render(
             <Route path='contacts' element={<Contacts />} />
             <Route path='about' element={<About />} />
             <Route path='qa' element={<QA />} />
-            <Route path='channels' element={<Channel />} />
+            <Route path='channels' element={<UcPage />} />
             <Route path='rules' element={<CommunityRules />}/>
             <Route path='studysessions' element={<StudySessions />}/>
             <Route path='channel/:channel_id' element={
               <PrivateRoute>
-                <Channel />
+                <UcPage />
               </PrivateRoute>
             } />
           </Route>

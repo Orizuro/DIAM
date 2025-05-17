@@ -38,5 +38,6 @@ urlpatterns = [
     # UC CRUD
     path('api/create-uc/', views.create_uc),
     path('api/delete-uc/', views.delete_uc),
+    path('api/get-ucs/', views.get_ucs),
 ]
 
