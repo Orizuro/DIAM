@@ -54,12 +54,12 @@
     margin-top: 0.5rem;
     text-decoration: underline;
 }
-.error-message {
+.error-message-login {
     color: #ff4d4f;
-    margin-top: 8px;
+    margin-top: 8px;;
 }
 
-.success-message {
+.success-message-login {
     color: #4caf50;
     margin-top: 8px;
     font-weight: bold;

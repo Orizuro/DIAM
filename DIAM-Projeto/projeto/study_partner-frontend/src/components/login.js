@@ -86,8 +86,8 @@ function Login({ onClose }) {
                         />
                     )}
 
-                    {error && <p className="error-message">{error}</p>}
-                    {successMessage && <p className="success-message">{successMessage}</p>}
+                    {error && <p className="error-message-login">{error}</p>}
+                    {successMessage && <p className="success-message-login">{successMessage}</p>}
 
                     <button type="submit" className="modal-submit">
                         {mode === "login" ? "Entrar" : "Registrar"}

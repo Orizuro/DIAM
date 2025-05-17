@@ -26,7 +26,7 @@ function Header() {
                     </button>
                     {showDropdown && (
                         <div className="dropdown-menu">
-                            <Link to="/minhas-sessoes" className="dropdown-item">Minhas sessões de estudo</Link>
+                            <Link to="/studysessions" className="dropdown-item">Minhas sessões de estudo</Link>
                             <Link to="/minha-conta" className="dropdown-item">Minha conta</Link>
                             <button className="dropdown-item logout-item" onClick={logout}>Logout</button>
                         </div>
