@@ -28,6 +28,8 @@ urlpatterns = [
     path('api/user/', views.user_view),
     path('api/messages/', views.get_messages),
     path('api/token-auth/', obtain_auth_token),
+    path('api/get-channels/', views.get_channels),
+    path('api/get-sessions/', views.get_sessions),
 
     # Session CRUD
     path('api/create-session/', views.create_session),

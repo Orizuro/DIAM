@@ -1,4 +1,4 @@
-from .models import Channel, Message, Session, Uc
+from .models import Channel, Message, Session, Student, Uc
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -102,7 +102,7 @@ def delete_session(request):
             return Response({"error": "Session not found"}, status=status.HTTP_404_NOT_FOUND)
 
         session.delete()
-        return Response({"message": "Session deleted successfully!"}, status=status.HTTP_200_OK)
+        return Response({"message": "Session deleted successfully!"})
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -163,7 +163,51 @@ def delete_uc(request):
 
         uc.delete()
 
-        return Response({"message": "UC deleted successfully!"}, status=status.HTTP_200_OK)
+        return Response({"message": "UC deleted successfully!"})
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_channels(request):
+    try: 
+        student = Student.objects.get(user=request.user)
+        channels = student.channels.all()
+
+        data = []
+        for channel in channels:
+            channel_dict = {
+                "id": channel.id,
+                "name": channel.name,
+                "description": channel.description,
+                "created_at": channel.created_at,
+            }
+            data.append(channel_dict)
+
+        return Response({"channels": data})
+
+    except Student.DoesNotExist:
+        return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_sessions(request):
+    uc_code = request.data.get("uc")
+
+    if not uc_code:
+        return Response({"error": "Missing code, name, or description"},status=status.HTTP_400_BAD_REQUEST)
+
+    sessions = Session.objects.filter(uc=uc_code)
+
+    data = []
+    for session in sessions:
+        channel_dict = {
+            "uc": session.uc,
+            "total_participants": session.total_participants,
+            "date_time": session.date_time,
+        }
+        data.append(channel_dict)
+
+    return Response({"sessions": data})
+

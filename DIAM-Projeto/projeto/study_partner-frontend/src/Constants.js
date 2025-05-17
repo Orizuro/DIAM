@@ -6,11 +6,14 @@ export const BACKEND_HOST = 'localhost:8000'
 export const LOGIN_URL = `http://${BACKEND_HOST}/api/login/`
 export const LOGOUT_URL = `http://${BACKEND_HOST}/api/logout/`
 export const SIGNUP_URL = `http://${BACKEND_HOST}/api/signup/`
+export const GET_CHANNELS_URL = `http://${BACKEND_HOST}/api/get-channels/`
+export const GET_SESSIONS_URL = `http://${BACKEND_HOST}/api/get-sessions/`
 
 export const CREATE_UC_URL = `http://${BACKEND_HOST}/api/create-uc/`
 export const DELETE_UC_URL = `http://${BACKEND_HOST}/api/delete-uc/`
 export const CREATE_SESSION_URL = `http://${BACKEND_HOST}/api/create-session/`
 export const DELETE_SESSION_URL = `http://${BACKEND_HOST}/api/delete-session/`
+
 
 export const getMessagesURL = (channel_id) => {
   return `http://${BACKEND_HOST}/api/messages/?channel_id=${channel_id}`
