@@ -1,5 +1,5 @@
 .chat-container {
-  max-width: 90%;
+  max-width: 600px;
   margin: 30px auto;
   border: 1px solid #ddd;
   border-radius: 12px;
@@ -27,16 +27,19 @@
   background: #f9f9f9;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .chat-bubble {
   max-width: 70%;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: 20px;
   font-size: 15px;
-  line-height: 1.4;
+  line-height: 1.5;
   word-wrap: break-word;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-bubble.me {
@@ -51,6 +54,22 @@
   color: #111827;
   align-self: flex-start;
   border-bottom-left-radius: 4px;
+}
+
+.chat-text {
+  margin-bottom: 6px;
+}
+
+.chat-meta {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.chat-bubble.other .chat-meta {
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .chat-input-bar {

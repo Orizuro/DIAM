@@ -55,36 +55,36 @@ def user_view(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_messages(request):
-    channel_code = request.GET["channel_id"]
-    channel = Channel.objects.get(uc=channel_code)
-    messages = Message.objects.filter(to=channel)
+    # channel_code = request.GET["channel_id"]
+    # channel = Channel.objects.get(uc=channel_code)
+    # messages = Message.objects.filter(to=channel)
 
-    data = []
-    for message in messages:
-        id = message.sender_id
-        user = User.objects.get(id=id)
+    # data = []
+    # for message in messages:
+    #     id = message.sender_id
+    #     user = User.objects.get(id=id)
 
-        is_admin = user.is_staff or user.is_superuser
+    #     is_admin = user.is_staff or user.is_superuser
 
-        if is_admin: 
-            first_name = "Admin"
-            last_name = user.username 
+    #     if is_admin: 
+    #         first_name = "Admin"
+    #         last_name = user.username 
 
-        else:
-            student = Student.objects.get(user=user)
-            first_name = student.first_name 
-            last_name = student.last_name 
+    #     else:
+    #         student = Student.objects.get(user=user)
+    #         first_name = student.first_name 
+    #         last_name = student.last_name 
 
-        msg = {
-                "sender": user.username,
-                "first_name": first_name,
-                "last_name": last_name,
-                "content": message.content,
-                "created_at": message.created_at,
-        }
-        data.append(msg)
+    #     msg = {
+    #             "sender": user.username,
+    #             "first_name": first_name,
+    #             "last_name": last_name,
+    #             "content": message.content,
+    #             "created_at": message.created_at,
+    #     }
+    #     data.append(msg)
         
-    return Response({'messages': data})
+    return Response({'messages': []})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminUser])
@@ -211,7 +211,7 @@ def delete_uc(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-def get_ucs():
+def get_ucs(request):
     try:
         ucs = Uc.objects.all()
         data = []
