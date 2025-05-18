@@ -211,8 +211,7 @@ def delete_uc(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_ucs(request):
+def get_ucs():
     try:
         ucs = Uc.objects.all()
         data = []
@@ -253,7 +252,7 @@ def get_channels(request):
         return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def get_sessions(request):
     uc_code = request.data.get("uc")
     date = request.data.get("date")
