@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './TodasSessoes.css';
 import UcCard from './UsCard';
+import { GET_UCS_URL } from '../Constants';
+import axios from 'axios';
 
 const TodasSessoes = () => {
     const [ucs, setUcs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/get-ucs/')
-            .then((res) => res.json())
+        axios.get(GET_UCS_URL, {withCredentials: true})
+            .then(res => res.data)
             .then((data) => setUcs(data.ucs))
             .catch((err) => console.error('Erro ao buscar UCs:', err));
     }, []);

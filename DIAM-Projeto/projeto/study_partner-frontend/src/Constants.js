@@ -11,6 +11,7 @@ export const GET_SESSIONS_URL = `http://${BACKEND_HOST}/api/get-sessions/`
 
 export const CREATE_UC_URL = `http://${BACKEND_HOST}/api/create-uc/`
 export const DELETE_UC_URL = `http://${BACKEND_HOST}/api/delete-uc/`
+export const GET_UCS_URL = `http://${BACKEND_HOST}/api/get-ucs/`
 export const CREATE_SESSION_URL = `http://${BACKEND_HOST}/api/create-session/`
 export const DELETE_SESSION_URL = `http://${BACKEND_HOST}/api/delete-session/`
 
