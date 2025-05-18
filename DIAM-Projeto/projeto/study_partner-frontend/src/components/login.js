@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/AuthProvider";
-import "./login.css";
+import "./styles/login.css";
 
 function Login({ onClose }) {
     const auth = useAuth();

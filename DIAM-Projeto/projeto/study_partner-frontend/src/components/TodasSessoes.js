@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './TodasSessoes.css';
+import './styles/TodasSessoes.css';
 import UcCard from './UsCard';
 
 const TodasSessoes = () => {

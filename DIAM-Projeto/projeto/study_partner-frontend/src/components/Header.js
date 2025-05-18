@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./Header.css";
+import "./styles/Header.css";
 import {useEffect, useState} from "react";
 import { useAuth } from "../hooks/AuthProvider";
 import Login from "./login";

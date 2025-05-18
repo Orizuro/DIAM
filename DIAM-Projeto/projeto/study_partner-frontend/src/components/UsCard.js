@@ -1,5 +1,5 @@
 import React from 'react';
-import './UsCard.css';
+import './styles/UsCard.css';
 import { useNavigate } from 'react-router-dom';
 
 const UcCard = ({ name, description, code }) => {

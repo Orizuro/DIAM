@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import './MinhasSessoes.css'
+import './styles/MinhasSessoes.css'
 import Calendar from "react-calendar";
 const MinhasSessoes = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
