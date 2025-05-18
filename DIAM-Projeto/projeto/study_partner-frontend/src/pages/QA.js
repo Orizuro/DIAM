@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './QA.css'
+import './styles/QA.css'
 
 const QA = () => {
 
@@ -41,7 +41,7 @@ const QA = () => {
                     Contacte-nos através da nossa página de{' '}
                     <a href="#" onClick={(e) => {
                         e.preventDefault();
-                        window.location.href = '/Contactos';
+                        window.location.href = '/contacts';
                     }}>
                         Contactos
                     </a>

@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthProvider from './hooks/AuthProvider';
-import Channel from './pages/channel/Channel';
 import Login from './pages/Login';
 import Contacts from './pages/Contacts';
 import QA from './pages/QA';

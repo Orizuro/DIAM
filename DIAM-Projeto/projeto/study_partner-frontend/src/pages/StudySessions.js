@@ -1,6 +1,6 @@
 // pages/SessoesPage.js
 import React, { useState } from "react";
-import "./StudySessions.css";
+import "./styles/StudySessions.css";
 import TodasSessoes from "../components/TodasSessoes";
 import MinhasSessoes from "../components/MinhasSessoes";
 

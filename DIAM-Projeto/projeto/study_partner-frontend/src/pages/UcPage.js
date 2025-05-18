@@ -1,7 +1,7 @@
 import React from 'react';
 import Calendar from "react-calendar";
 import Channel from '../pages/channel/Channel';
-import './UcPage.css';
+import './styles/UcPage.css';
 
 const UcPage = () => {
     return (

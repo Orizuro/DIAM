@@ -1,0 +1,51 @@
+.community-rules-container {
+    padding: 2rem;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+.community-rules-container h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.community-rules-container h2 {
+    font-size: 1.4rem;
+}
+
+.community-rules-container p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.community-rules-container ul {
+    background-color:rgb(215, 216, 213);
+    display: flex;
+    flex-direction: column;
+}
+.community-rules-container ol {
+    display: flex;
+    flex-direction: column;
+}
+
+.community-rules-container li {
+    display: flex;
+
+}
+
+.community-rules-container a {
+    color: black;
+    display: flex;
+}
+
+.community-rules-container a:hover {
+    text-decoration: underline;
+}
+
+.community-rules-container em {
+    display: flex;
+    margin-top: 1rem;
+    font-style: italic;
+    color: #333;
+}

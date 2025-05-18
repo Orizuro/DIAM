@@ -1,5 +1,5 @@
 import React from 'react';
-import './CommunityRules.css';
+import './styles/CommunityRules.css';
 
 
 const CommunityRules = () => {

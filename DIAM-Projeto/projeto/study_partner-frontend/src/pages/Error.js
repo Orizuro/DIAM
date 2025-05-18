@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Error.css";
+import "./styles/Error.css";
 
 const ErrorPage = ({ code = "Error", title = "Something went wrong", message = "An unexpected error occurred." }) => {
   const navigate = useNavigate();
