@@ -9,7 +9,7 @@ const TodasSessoes = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        axios.get(GET_UCS_URL, {withCredentials: true})
+        axios.get(GET_UCS_URL, )
             .then(res => res.data)
             .then((data) => setUcs(data.ucs))
             .catch((err) => console.error('Erro ao buscar UCs:', err));

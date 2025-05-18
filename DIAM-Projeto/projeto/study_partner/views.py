@@ -55,45 +55,41 @@ def user_view(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_messages(request):
-    # channel_code = request.GET["channel_id"]
-    # channel = Channel.objects.get(uc=channel_code)
-    # messages = Message.objects.filter(to=channel)
+    channel_code = request.GET["channel_id"]
+    channel = Channel.objects.get(uc=channel_code)
+    messages = Message.objects.filter(to=channel)
+    data = []
+    for message in messages:
+        id = message.sender_id
+        user = User.objects.get(id=id)
+        is_admin = user.is_staff or user.is_superuser
+        if is_admin:
+            first_name = "Admin"
+            last_name = user.username
+        else:
+            student = Student.objects.get(user=user)
+            first_name = student.first_name
+            last_name = student.last_name
+            msg = {
+                "sender": user.username,
+                "first_name": first_name,
+                "last_name": last_name,
+                "content": message.content,
+                "created_at": message.created_at,
+            }
+            data.append(msg)
 
-    # data = []
-    # for message in messages:
-    #     id = message.sender_id
-    #     user = User.objects.get(id=id)
-
-    #     is_admin = user.is_staff or user.is_superuser
-
-    #     if is_admin: 
-    #         first_name = "Admin"
-    #         last_name = user.username 
-
-    #     else:
-    #         student = Student.objects.get(user=user)
-    #         first_name = student.first_name 
-    #         last_name = student.last_name 
-
-    #     msg = {
-    #             "sender": user.username,
-    #             "first_name": first_name,
-    #             "last_name": last_name,
-    #             "content": message.content,
-    #             "created_at": message.created_at,
-    #     }
-    #     data.append(msg)
-        
-    return Response({'messages': []})
+    return Response({'messages': data})
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def create_session(request):
     try:
         uc_code = request.data.get("uc")
         date_time = request.data.get("date_time")
 
-        if not (uc_code and total_participants and date_time):
+
+        if not (uc_code and date_time):
             return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
@@ -106,11 +102,18 @@ def create_session(request):
         except Uc.DoesNotExist:
             return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
 
+        selected_date = parse(date_time)
+
+        print(channel.uc.name)
+        print(selected_date)
+
         session = Session.objects.create(
-            uc=uc,
-            channel=uc,
-            date_time=date_time
+
+            channel=channel,
+            date_time = selected_date
         )
+        print(session.date_time)
+
         session.users.add(request.user)
 
         return Response({"message": "Session created successfully!"}, status=status.HTTP_201_CREATED)
@@ -119,25 +122,41 @@ def create_session(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def delete_session(request):
     try:
-        session_id = request.data.get("id")
+        uc_code = request.data.get("uc")
+        date_time = request.data.get("date_time")
 
-        if not session_id:
-            return Response({"error": "Missing session ID"}, status=status.HTTP_400_BAD_REQUEST)
+        if not (uc_code and date_time):
+            return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Get the UC
         try:
-            session = Session.objects.get(id=session_id)
-        except Session.DoesNotExist:
+            uc = Uc.objects.get(code=uc_code)
+        except Uc.DoesNotExist:
+            return Response({"error": "UC not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Get the channel linked to the UC
+        try:
+            channel = Channel.objects.get(uc=uc)
+        except Channel.DoesNotExist:
+            return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Find the session to delete
+        session = Session.objects.filter(channel=channel, date_time=date_time).first()
+
+        if not session:
             return Response({"error": "Session not found"}, status=status.HTTP_404_NOT_FOUND)
 
         session.delete()
-        return Response({"message": "Session deleted successfully!"})
+        return Response({"message": "Session deleted successfully!"}, status=status.HTTP_200_OK)
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminUser])
