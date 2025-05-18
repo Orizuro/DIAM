@@ -13,32 +13,58 @@ const AuthProvider = ({ children }) => {
   }
 
   const [currentUser, setCurrentUser] = useState(getUserFromLS);
-  const [isLoggedIn, setLoggedIn] = useState(currentUser !== null);
-
-  console.log("current user: ", currentUser);
+  const [isAuthenticated, setIsAuthenticaded] = useState(currentUser !== null);
 
   useEffect(() => {
-    currentUser !== null ? setLoggedIn(true) : setLoggedIn(false);
+    currentUser !== null ? setIsAuthenticaded(true) : setIsAuthenticaded(false);
   }, [currentUser])
 
-  const login = async (username, password) => {
-    await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true })
-      .then(response => {
-        const user = {
-          username: response.data.username, 
-          course: response.data.course, 
-          token: response.data.token
+  axios.interceptors.request.use(
+      (config) => {
+        if (currentUser && currentUser.token) {
+          config.headers.Authorization = `Token ${currentUser.token}`;
         }
-        setCurrentUser(user);
-        localStorage.setItem(Constants.LS_USER_ITEM, JSON.stringify(user));
-      })
-      .catch(err => console.log(err));
-  }
+        return config;
+      },
+      (error) => Promise.reject(error)
+  );
+
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true });
+
+      const user = {
+        username: response.data.username,
+        course: response.data.course,
+        token: response.data.token
+      };
+
+      setCurrentUser(user);
+      localStorage.setItem(Constants.LS_USER_ITEM, JSON.stringify(user));
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+  const signup = async (username, password) => {
+    try {
+      const response = await axios.post(Constants.SIGNUP_URL, { username, password }, { withCredentials: true });
+      // Assuming response.data.message exists on success
+      return { success: true, message: response.data.message };
+    } catch (error) {
+      // Extract error message from backend if exists
+      const errMsg =
+          error.response?.data?.error ||
+          "Erro ao registrar usuário. Tente novamente.";
+      return { success: false, message: errMsg };
+    }
+  };
 
   const logout = () => {
     try {
       axios.get(Constants.LOGOUT_URL);
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     } finally {
       setCurrentUser(null);
@@ -47,9 +73,11 @@ const AuthProvider = ({ children }) => {
   }
 
 
-  return <AuthContext.Provider value={{ login, logout, currentUser, isLoggedIn }}>
-    {children}
-  </AuthContext.Provider>
+  return (
+      <AuthContext.Provider value={{ login, logout, signup, currentUser, isAuthenticated }}>
+        {children}
+      </AuthContext.Provider>
+  );
 }
 
 export default AuthProvider;

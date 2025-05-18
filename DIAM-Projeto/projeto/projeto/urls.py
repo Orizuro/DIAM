@@ -15,10 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path
 import study_partner.views as views
 from rest_framework.authtoken.views import obtain_auth_token
-from . import consumers 
 
 
 urlpatterns = [
@@ -27,10 +26,18 @@ urlpatterns = [
     path('api/login/', views.login_view),
     path('api/logout/', views.logout_view),
     path('api/user/', views.user_view),
+    path('api/messages/', views.get_messages),
     path('api/token-auth/', obtain_auth_token),
-    path("<str:room_name>/", views.room, name="room"),
+    path('api/get-channels/', views.get_channels),
+    path('api/get-sessions/', views.get_sessions),
+
+    # Session CRUD
+    path('api/create-session/', views.create_session),
+    path('api/delete-session/', views.delete_session),
+
+    # UC CRUD
+    path('api/create-uc/', views.create_uc),
+    path('api/delete-uc/', views.delete_uc),
+    path('api/get-ucs/', views.get_ucs),
 ]
 
-websocket_urlpatterns = [
-    re_path(r"ws/chat/(?P<room_name>\w+)/$", consumers.ChatConsumer.as_asgi()),
-]

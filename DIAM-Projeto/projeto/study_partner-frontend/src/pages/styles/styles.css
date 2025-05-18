@@ -51,42 +51,6 @@ figcaption {
   text-align: center;
 }
 
-.mainHeading {
-  color: white;
-  font-size: 2rem;
-  font-family: Arial, sans-serif;
-  text-align: left;
-}
-
-#nav_bar {
-  font-weight: bold;
-  font-size: 1em;
-}
-
-.Header {
-  background-color: white;
-  color: rgb(38, 39, 36);
-  padding: 1px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.header-logo {
-  height: 60px; /* ou qualquer tamanho que desejar */
-  width: auto; /* mantém a proporção da imagem */
-  margin: 5px 10px; /* ajuste as margens conforme necessário */
-}
-
-
-.Footer {
-  background-color: rgb(38, 39, 36);
-  color: white;
-  padding: 10px;
-  position: fixed;
-  bottom:0;
-  width: 100%;
-}
 
 body {
   background-color: rgb(215, 216, 213);;

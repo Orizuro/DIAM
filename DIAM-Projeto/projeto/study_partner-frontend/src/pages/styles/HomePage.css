@@ -1,0 +1,74 @@
+
+.HomePage {
+    width: 100%;
+    height: 100vh;
+}
+
+.MainImage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.BackgroundImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.Overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    color: white;
+    padding: 20px;
+}
+.ImageOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55); /* semi-transparent black */
+    z-index: 1;
+}
+/* Logo still top-left */
+.Logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.Logo img {
+    height: 200px;
+}
+
+/* Move text to bottom */
+.OverlayText {
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+    color: white;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    padding-bottom: 100px;
+}
+
+.OverlayText h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.OverlayText p {
+    font-size: 1.25rem;
+}
+.OverlayText h1{
+    color: white;
+}
+.OverlayText h2 {
+    color: white;
+}

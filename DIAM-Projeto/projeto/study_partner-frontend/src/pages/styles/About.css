@@ -1,0 +1,19 @@
+.about-container{
+    padding: 2rem;
+    height: 85vh;
+
+}
+
+.about-container h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-container h2 {
+    font-size: 1.4rem;
+}
+
+.about-container p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}

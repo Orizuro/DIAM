@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-
+import './styles/QA.css'
 
 const QA = () => {
 
@@ -59,7 +59,7 @@ const QA = () => {
 
                 {QAItems.map((item, index) => (
                     <div key={index} style={{ marginBottom: '20px', cursor: 'pointer' }} onClick={() => toggleAnswer(index)}>
-                        <h3>{item.question}</h3>
+                        <h2>{item.question}</h2>
                         {activeIndex === index && renderAnswer(item.answer, index)}
                     </div>
                 ))}
