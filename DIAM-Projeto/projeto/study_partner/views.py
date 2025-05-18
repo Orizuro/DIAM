@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User 
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from datetime import datetime
+from dateutil.parser import parse
+
 
 @api_view(['POST'])
 def signup(request):
@@ -56,16 +59,38 @@ def get_messages(request):
     channel = Channel.objects.get(uc=channel_code)
     messages = Message.objects.filter(to=channel)
 
-    data = list(messages.values())
-    
-    return JsonResponse(list(data), safe=False)
+    data = []
+    for message in messages:
+        id = message.sender_id
+        user = User.objects.get(id=id)
+
+        is_admin = user.is_staff or user.is_superuser
+
+        if is_admin: 
+            first_name = "Admin"
+            last_name = user.username 
+
+        else:
+            student = Student.objects.get(user=user)
+            first_name = student.first_name 
+            last_name = student.last_name 
+
+        msg = {
+                "sender": user.username,
+                "first_name": first_name,
+                "last_name": last_name,
+                "content": message.content,
+                "created_at": message.created_at,
+        }
+        data.append(msg)
+        
+    return Response({'messages': data})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def create_session(request):
     try:
         uc_code = request.data.get("uc")
-        total_participants = request.data.get("total_participants")
         date_time = request.data.get("date_time")
 
         if not (uc_code and total_participants and date_time):
@@ -76,11 +101,17 @@ def create_session(request):
         except Uc.DoesNotExist:
             return Response({"error": "UC not found"}, status=status.HTTP_404_NOT_FOUND)
 
+        try:
+            channel = Channel.objects.get(uc=uc)
+        except Uc.DoesNotExist:
+            return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+
         session = Session.objects.create(
             uc=uc,
-            total_participants=total_participants,
+            channel=uc,
             date_time=date_time
         )
+        session.users.add(request.user)
 
         return Response({"message": "Session created successfully!"}, status=status.HTTP_201_CREATED)
 
@@ -180,6 +211,7 @@ def delete_uc(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_ucs(request):
     try:
         ucs = Uc.objects.all()
@@ -224,20 +256,46 @@ def get_channels(request):
 @permission_classes([IsAuthenticated])
 def get_sessions(request):
     uc_code = request.data.get("uc")
+    date = request.data.get("date")
+    username = request.data.get("username")
 
-    if not uc_code:
-        return Response({"error": "Missing code, name, or description"},status=status.HTTP_400_BAD_REQUEST)
+    filters = {}
 
-    sessions = Session.objects.filter(uc=uc_code)
+    if uc_code:
+        filters['channel__uc__code'] = uc_code
+
+    if username:
+        filters['users__username'] = username
+
+    if not filters and not date:
+        return Response(
+            {"error": "At least one filter (uc, username or date) is required"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    sessions = Session.objects.filter(**filters)
+
+    if date:
+        try:
+            selected_date = parse(date).date()
+
+            sessions = sessions.filter(date_time__date=selected_date)
+
+        except:
+            return Response(
+                {"error": "Invalid date format. Use YYYY-MM-DD"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     data = []
     for session in sessions:
-        channel_dict = {
-            "uc": session.uc,
-            "total_participants": session.total_participants,
+        session_dict = {
+            "uc_name": session.channel.uc.name,
+            "total_participants": session.users.count(),
             "date_time": session.date_time,
         }
-        data.append(channel_dict)
+
+        data.append(session_dict)
 
     return Response({"sessions": data})
 
