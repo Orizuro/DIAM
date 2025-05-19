@@ -179,10 +179,9 @@ const UcPage = () => {
                                   checked={isBooked}
                                   onChange={() => handleSlotToggle(slot, isBooked)}
                               />
-                              <span>{slot.toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })}</span>
+                              <span>
+                                {String(slot.getHours()).padStart(2, '0')}:{String(slot.getMinutes()).padStart(2, '0')}
+                              </span>
                             </label>
                         );
                       })}
