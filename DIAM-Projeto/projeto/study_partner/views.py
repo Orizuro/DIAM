@@ -10,6 +10,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from datetime import datetime
 from dateutil.parser import parse
+from django.shortcuts import get_object_or_404
 
 
 @api_view(['POST'])
@@ -78,6 +79,7 @@ def get_messages(request):
             last_name = student.last_name
 
         msg = {
+            "id": message.id,
             "sender": user.username,
             "first_name": first_name,
             "last_name": last_name,
@@ -277,12 +279,6 @@ def get_channels(request):
     except Student.DoesNotExist:
         return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
 
-
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def get_my_channels():
-
-
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
 def get_sessions(request):
@@ -326,3 +322,31 @@ def get_sessions(request):
 
     return Response({"sessions": data})
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_like(request):
+    message_id = request.data.get('message_id')
+    if not message_id:
+        return Response({'error': 'message_id is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    message = get_object_or_404(Message, id=message_id)
+
+    user = request.user
+    if user in message.users_who_liked.all():
+        message.users_who_liked.remove(user)
+        liked = False
+    else:
+        message.users_who_liked.add(user)
+        liked = True
+
+    return Response({
+        'message_id': message.id,
+        'liked': liked,
+        'total_likes': message.likes
+    }, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_message_likes(request):
+    pass
