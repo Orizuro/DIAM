@@ -85,3 +85,14 @@ abbr[title] {
 .react-calendar--selectRange .react-calendar__tile--hover {
  background-color: #f8f8fa;
 }
+
+/* Custom styling for days with sessions */
+.has-sessions {
+  background-color: #ffcc80 !important; /* Light orange color */
+  border-radius: 6px;
+  position: relative;
+}
+
+.has-sessions:hover {
+  background-color: #ffb74d !important; /* Slightly darker orange on hover */
+}
