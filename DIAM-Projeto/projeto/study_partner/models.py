@@ -18,15 +18,16 @@ class Student(models.Model):
     first_name = models.CharField(max_length=100) 
     last_name = models.CharField(max_length=100) 
     course = models.CharField(max_length=50) 
-    reputation = models.IntegerField()
+    reputation = models.IntegerField(default=0)
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     to = models.ForeignKey(Channel, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    # likes = models.IntegerField(default=0)
 
 class Session(models.Model):
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
-    users = models.ManyToManyField(User, related_name="sessions")
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date_time = models.DateTimeField()
