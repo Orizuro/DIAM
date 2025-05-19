@@ -64,12 +64,40 @@
   font-size: 12px;
   color: rgba(255, 255, 255, 0.7);
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   gap: 10px;
 }
 
 .chat-bubble.other .chat-meta {
   color: rgba(0, 0, 0, 0.5);
+}
+
+.like-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.like-button svg {
+  color: #ccc;
+  font-size: 16px;
+  margin-right: 4px;
+  transition: color 0.2s ease;
+  padding: 2px;
+}
+
+.like-button svg.liked {
+  color: #e74c3c;
+}
+
+.like-button:hover svg {
+  color: #e74c3c;
+}
+
+.like-count {
+  font-size: 12px;
+  margin-left: 2px;
 }
 
 .chat-input-bar {

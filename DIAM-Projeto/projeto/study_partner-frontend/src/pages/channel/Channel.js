@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { GET_SESSIONS_URL, getMessagesURL, WebSocketMessageType, WS_URL } from '../../Constants';
 import { useAuth } from '../../hooks/AuthProvider';
+import { FaHeart } from 'react-icons/fa';
 
 const Channel = () => {
   const { channel_id } = useParams();
@@ -14,6 +15,7 @@ const Channel = () => {
   const [channelName, setChannelName] = useState("");
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [messageLikes, setMessageLikes] = useState({});
   // const [sessions, setSessions] = useState([]);
   // const [isLoadingSessions, setIsLoadingSessions] = useState(true);
 
@@ -76,6 +78,18 @@ const Channel = () => {
       minute: '2-digit',
     });
   }
+
+  const handleLike = (messageId) => {
+    setMessageLikes(prevLikes => {
+      const newLikes = { ...prevLikes };
+      if (newLikes[messageId]) {
+        newLikes[messageId] = newLikes[messageId] + 1;
+      } else {
+        newLikes[messageId] = 1;
+      }
+      return newLikes;
+    });
+  }
   // useEffect(() => {
   //   const fetchSessions = async () => {
   //     try {
@@ -122,6 +136,10 @@ const Channel = () => {
                 <div className="chat-meta">
                   <span className="chat-name">{message.sender}</span>
                   <span className="chat-time">{getHourMinute(message.created_at)}</span>
+                  <div className="like-button" onClick={() => handleLike(ind)}>
+                    <FaHeart className={messageLikes[ind] ? "liked" : ""} />
+                    {messageLikes[ind] ? <span className="like-count">{messageLikes[ind]}</span> : null}
+                  </div>
                 </div>
               </div>
             )

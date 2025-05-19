@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Channel from '../pages/channel/Channel';
-import './UcPage.css';
+import './styles/UcPage.css';
 import {GET_SESSIONS_URL, CREATE_SESSION_URL, DELETE_SESSION_URL} from '../Constants';
 
 const UcPage = () => {
