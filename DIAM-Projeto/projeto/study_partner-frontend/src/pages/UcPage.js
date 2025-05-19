@@ -132,8 +132,7 @@ const UcPage = () => {
 
   useEffect(() => {
     getMonthSessions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate.getMonth(), selectedDate.getFullYear(), channel_id]);
+  }, [selectedDate.getMonth(), selectedDate.getFullYear()]);
 
   const getTileClassName = ({ date, view }) => {
     // Only add custom class to month view
@@ -160,34 +159,36 @@ const UcPage = () => {
               />
             </div>
 
-            <div className="session-list">
-              <h3>Sessions on {selectedDate.toDateString()}</h3>
-              {loading ? (
-                  <p>Loading...</p>
-              ) : (
-                  <div className="time-slot-list">
-                    {generateTimeSlots(selectedDate).map((slot, i) => {
-                      const iso = slot.toISOString();
-                      const isBooked = sessions.some(
-                          (s) => new Date(s.date_time).toISOString() === iso
-                      );
+            <div className="session-list-container">
+              <h3 className="session-list-header">Sessions on {selectedDate.toDateString()}</h3>
+              <div className="session-list">
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <div className="time-slot-list">
+                      {generateTimeSlots(selectedDate).map((slot, i) => {
+                        const iso = slot.toISOString();
+                        const isBooked = sessions.some(
+                            (s) => new Date(s.date_time).toISOString() === iso
+                        );
 
-                      return (
-                          <label key={i} className="time-slot">
-                            <input
-                                type="checkbox"
-                                checked={isBooked}
-                                onChange={() => handleSlotToggle(slot, isBooked)}
-                            />
-                            {slot.toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            })}
-                          </label>
-                      );
-                    })}
-                  </div>
-              )}
+                        return (
+                            <label key={i} className="time-slot">
+                              <input
+                                  type="checkbox"
+                                  checked={isBooked}
+                                  onChange={() => handleSlotToggle(slot, isBooked)}
+                              />
+                              <span>{slot.toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}</span>
+                            </label>
+                        );
+                      })}
+                    </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

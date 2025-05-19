@@ -15,6 +15,7 @@
     display: flex;
     flex-direction: row;
     overflow: hidden;
+    height: 100vh;
 }
 
 .calendar-section {
@@ -25,6 +26,7 @@
 .chat-section {
     flex: 1;
     flex-direction: column;
+    height: 100vh;
 }
 
 
@@ -86,13 +88,84 @@ abbr[title] {
  background-color: #f8f8fa;
 }
 
-/* Custom styling for days with sessions */
-.has-sessions {
-  background-color: #ffcc80 !important; /* Light orange color */
-  border-radius: 6px;
-  position: relative;
+.calendar-scroll-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.has-sessions:hover {
-  background-color: #ffb74d !important; /* Slightly darker orange on hover */
+.session-list-container {
+    width: 90%;
+    margin: 0 auto;
+    text-align: left;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-top: 1rem;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 320px; /* Height to accommodate header (50px) and session-list (252px) with some margin */
+    margin-bottom: 30px;
+}
+
+.session-list-header {
+    color: #4f46e5;
+    font-size: 18px;
+    margin: 0;
+    padding: 16px;
+    border-bottom: 2px solid #eee;
+}
+
+.session-list {
+    height: 220px; /* Height for 4 time slots: 4*(padding-top + input height + padding-bottom) + 3*gap + margin-top + session-list padding */
+    overflow-y: auto;
+    padding: 16px;
+    text-align: left;
+}
+
+.time-slot-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.time-slot {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.time-slot:hover {
+    background-color: #f0f0f5;
+}
+
+.time-slot input:checked + span {
+    color: #4f46e5;
+    font-weight: 600;
+}
+
+.time-slot:last-child {
+    border-bottom: none;
+}
+
+.time-slot input {
+    margin-right: 12px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #4f46e5;
+}
+
+.session-list p {
+    color: #666;
+    text-align: center;
+    padding: 20px 0;
+    font-style: italic;
 }
