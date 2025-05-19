@@ -33,15 +33,11 @@ const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true });
 
-      const user = {
-        username: response.data.username,
-        course: response.data.course,
-        token: response.data.token
-      };
-
+      const user = response.data.user;
       setCurrentUser(user);
       localStorage.setItem(Constants.LS_USER_ITEM, JSON.stringify(user));
       return true;
+
     } catch (err) {
       console.error(err);
       return false;

@@ -28,7 +28,6 @@ function Header() {
                         <div className="dropdown-menu">
                             <Link to="/studysessions" className="dropdown-item">Minhas sessões de estudo</Link>
 
-
                             <button className="dropdown-item logout-item" onClick={logout}>Logout</button>
                         </div>
                     )}

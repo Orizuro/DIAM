@@ -2,8 +2,8 @@ import axios from 'axios';
 import './Channel.css';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { GET_SESSIONS_URL, getMessagesURL, WebSocketMessageType, WS_URL } from '../../Constants';
+import useWebSocket from 'react-use-websocket';
+import {  getMessagesURL, WebSocketMessageType, WS_URL } from '../../Constants';
 import { useAuth } from '../../hooks/AuthProvider';
 import { FaHeart } from 'react-icons/fa';
 
@@ -16,10 +16,8 @@ const Channel = () => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [messageLikes, setMessageLikes] = useState({});
-  // const [sessions, setSessions] = useState([]);
-  // const [isLoadingSessions, setIsLoadingSessions] = useState(true);
 
-  const { sendJsonMessage, readyState } = useWebSocket(WS_URL + channel_id + "/", {
+  const { sendJsonMessage } = useWebSocket(WS_URL + channel_id + "/", {
     onOpen: () => {
       setIsLoading(false);
     },
@@ -55,6 +53,7 @@ const Channel = () => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(getMessagesURL(channel_id), { withCredentials: true });
+        console.log(response.data.messages);
         setMessages(response.data.messages);
       } catch (error) {
         console.error("Erro ao carregar mensagens:", error);
@@ -78,7 +77,6 @@ const Channel = () => {
       minute: '2-digit',
     });
   }
-
   const handleLike = (messageId) => {
     setMessageLikes(prevLikes => {
       const newLikes = { ...prevLikes };
@@ -90,39 +88,6 @@ const Channel = () => {
       return newLikes;
     });
   }
-  // useEffect(() => {
-  //   const fetchSessions = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         GET_SESSIONS_URL,
-  //         {
-  //           uc: "001", // Use current channel ID
-  //           date: new Date(), // Current date
-  //           username: "misael" // Current user
-  //         },
-  //         { withCredentials: true }
-  //       ).then((res) => res.data).then(data => console.log(data));
-  //       setSessions(response.data.sessions);
-  //     } catch (error) {
-  //       console.error('Error fetching sessions:', error);
-  //     } finally {
-  //       console.log(sessions)
-  //       setIsLoadingSessions(false);
-  //     }
-  //   };
-
-  //   fetchSessions();
-  // }, [])
-
-
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: "Connecting",
-    [ReadyState.OPEN]: "Open",
-    [ReadyState.CLOSING]: "Closing",
-    [ReadyState.CLOSED]: "Closed",
-    [ReadyState.UNINSTANTIATED]: "Uninstantiated"
-  }[readyState];
-
   return (
     <>
       <div className='chat-container'>
@@ -132,9 +97,10 @@ const Channel = () => {
           {
             messages.map((message, ind) =>
               <div key={ind} className={`chat-bubble ${message.sender === auth.currentUser.username ? 'me' : 'other'}`}>
+                {/* <div>PR: 1</div> */}
                 <div className="chat-text">{message.content}</div>
                 <div className="chat-meta">
-                  <span className="chat-name">{message.sender}</span>
+                  <span className="chat-name">{`${message.sender}`}</span>
                   <span className="chat-time">{getHourMinute(message.created_at)}</span>
                   <div className="like-button" onClick={() => handleLike(ind)}>
                     <FaHeart className={messageLikes[ind] ? "liked" : ""} />

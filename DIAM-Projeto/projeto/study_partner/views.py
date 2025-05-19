@@ -34,10 +34,15 @@ def login_view(request):
 
     user = authenticate(request, username=username, password=password)
 
+    isAdmin = user.is_active or user.is_superuser
+
     if user is not None:
         login(request, user)
         token, _ = Token.objects.get_or_create(user=user)
-        return Response({'message': 'Logged in successfully', 'username': user.username, 'token': token.key})
+        return Response({
+                'message': 'Logged in successfully', 
+            'user': {'username': user.username, 'token': token.key, 'isAdmin': isAdmin}
+            })
     else:
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -63,6 +68,7 @@ def get_messages(request):
         id = message.sender_id
         user = User.objects.get(id=id)
         is_admin = user.is_staff or user.is_superuser
+
         if is_admin:
             first_name = "Admin"
             last_name = user.username
@@ -70,14 +76,16 @@ def get_messages(request):
             student = Student.objects.get(user=user)
             first_name = student.first_name
             last_name = student.last_name
-            msg = {
-                "sender": user.username,
-                "first_name": first_name,
-                "last_name": last_name,
-                "content": message.content,
-                "created_at": message.created_at,
-            }
-            data.append(msg)
+
+        msg = {
+            "sender": user.username,
+            "first_name": first_name,
+            "last_name": last_name,
+            "content": message.content,
+            "created_at": message.created_at,
+            "likes": "empty"
+        }
+        data.append(msg)
 
     return Response({'messages': data})
 
@@ -108,13 +116,12 @@ def create_session(request):
         print(selected_date)
 
         session = Session.objects.create(
-
+            user=request.user,
             channel=channel,
             date_time = selected_date
         )
         print(session.date_time)
 
-        session.users.add(request.user)
 
         return Response({"message": "Session created successfully!"}, status=status.HTTP_201_CREATED)
 
@@ -270,20 +277,22 @@ def get_channels(request):
     except Student.DoesNotExist:
         return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def get_my_channels():
+
+
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
 def get_sessions(request):
     uc_code = request.data.get("uc")
     date = request.data.get("date")
-    username = request.data.get("username")
 
     filters = {}
 
     if uc_code:
         filters['channel__uc__code'] = uc_code
-
-    if username:
-        filters['users__username'] = username
 
     if not filters and not date:
         return Response(
@@ -309,7 +318,7 @@ def get_sessions(request):
     for session in sessions:
         session_dict = {
             "uc_name": session.channel.uc.name,
-            "total_participants": session.users.count(),
+            "user": request.user,
             "date_time": session.date_time,
         }
 

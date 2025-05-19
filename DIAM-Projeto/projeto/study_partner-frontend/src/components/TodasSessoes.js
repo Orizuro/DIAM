@@ -3,13 +3,19 @@ import './styles/TodasSessoes.css';
 import UcCard from './UsCard';
 import { GET_UCS_URL } from '../Constants';
 import axios from 'axios';
+import AddUcCard from './AddUcCard';
+import AddUcForm from './AddUcForm';
+import { useAuth } from '../hooks/AuthProvider';
 
 const TodasSessoes = () => {
+    const user = useAuth().currentUser ?? false;
+
+    const [showModal, setShowModal] = useState(false);
     const [ucs, setUcs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        axios.get(GET_UCS_URL, )
+        axios.get(GET_UCS_URL)
             .then(res => res.data)
             .then((data) => setUcs(data.ucs))
             .catch((err) => console.error('Erro ao buscar UCs:', err));
@@ -38,6 +44,14 @@ const TodasSessoes = () => {
                 {filteredUcs.map((uc) => (
                     <UcCard key={uc.code} name={uc.name} description={uc.description} code={uc.code} />
                 ))}
+
+                { 
+                    user.isAdmin && <AddUcCard onClick={() => setShowModal(true)} /> 
+                }
+
+                {
+                    showModal && <AddUcForm onClose={() => setShowModal(false)} onSubmit={(e) => console.log(e)} />
+                }
             </div>
         </div>
     );
