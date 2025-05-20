@@ -35,7 +35,7 @@ def login_view(request):
 
     user = authenticate(request, username=username, password=password)
 
-    isAdmin = user.is_active or user.is_superuser
+    isAdmin = user.is_staff or user.is_superuser
 
     if user is not None:
         login(request, user)

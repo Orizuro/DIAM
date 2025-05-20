@@ -38,13 +38,12 @@ def create_ucs(self):
             "description": uc["description"]
         })
 
-        Channel.objects.create(
-            uc=new_uc,
-            name=f"Canal {name}",
-            description=f"Discussões sobre {name}"
-        )
-
         if created:
+            Channel.objects.create(
+                uc=new_uc,
+                name=f"Canal {name}",
+                description=f"Discussões sobre {name}"
+            )
             self.stdout.write(self.style.SUCCESS(f'UC "{uc["name"]}" criada com sucesso.'))
         else:
             self.stdout.write(self.style.WARNING(f'UC "{uc["name"]}" já existe.'))
@@ -65,9 +64,9 @@ def create_users(self):
     for username, args in adminUsers.items():
         if not User.objects.filter(username=username).exists():
             User.objects.create_superuser(username, args['email'], defaultPass)
-            self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" created successfully!'))
+            self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" criada com sucesso!'))
         else:
-            self.stdout.write(self.style.WARNING(f'Superuser "{username}" already exists.'))
+            self.stdout.write(self.style.WARNING(f'Superuser "{username}" Já existe.'))
 
 
 class Command(BaseCommand):
