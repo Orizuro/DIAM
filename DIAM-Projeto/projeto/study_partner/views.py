@@ -136,35 +136,15 @@ def create_session(request):
 @permission_classes([IsAuthenticated])
 def delete_session(request):
     try:
-        uc_code = request.data.get("uc")
-        date_time = request.data.get("date_time")
+        session_id = request.data.get("session_id")
 
-        if not (uc_code and date_time):
-            return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Get the UC
-        try:
-            uc = Uc.objects.get(code=uc_code)
-        except Uc.DoesNotExist:
-            return Response({"error": "UC not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        # Get the channel linked to the UC
-        try:
-            channel = Channel.objects.get(uc=uc)
-        except Channel.DoesNotExist:
-            return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        # Find the session to delete
-        session = Session.objects.filter(channel=channel, date_time=date_time).first()
+        session = Session.objects.get(id=session_id)
 
         if not session:
             return Response({"error": "Session not found"}, status=status.HTTP_404_NOT_FOUND)
 
         session.delete()
         return Response({"message": "Session deleted successfully!"}, status=status.HTTP_200_OK)
-
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -318,6 +298,7 @@ def get_sessions(request):
     data = []
     for session in sessions:
         session_dict = {
+            "session_id": session.id,
             "uc_name": session.channel.uc.name,
             "uc_code": session.channel.uc.code,
             "user": request.user.username,
