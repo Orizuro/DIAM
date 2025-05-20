@@ -25,8 +25,7 @@ class Message(models.Model):
     to = models.ForeignKey(Channel, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    total_likes = models.IntegerField(default=0)
-    is_liked_by_sender = models.BooleanField(default=False)
+    liked_by = models.ManyToManyField(User, related_name="liked_messages", blank=True)
 
 class Session(models.Model):
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)

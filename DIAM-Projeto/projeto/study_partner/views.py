@@ -65,7 +65,8 @@ def get_messages(request):
     channel_code = request.GET["channel_id"]
     channel = Channel.objects.get(uc=channel_code)
     messages = Message.objects.filter(to=channel)
-    data = []
+
+    data = {}
     for message in messages:
         user = message.sender
 
@@ -79,18 +80,16 @@ def get_messages(request):
             first_name = student.first_name
             last_name = student.last_name
 
-
         msg = {
-            "id": message.id,
             "sender": user.username,
             "first_name": first_name,
             "last_name": last_name,
             "content": message.content,
             "created_at": message.created_at,
-            "total_likes": message.total_likes, 
-            "is_liked_by_sender": message.is_liked_by_sender 
+            "total_likes": message.liked_by.count(), 
+            "liked_by": list(message.liked_by.values_list("username", flat=True))
         }
-        data.append(msg)
+        data[message.id] = msg
 
     return Response({'messages': data})
 

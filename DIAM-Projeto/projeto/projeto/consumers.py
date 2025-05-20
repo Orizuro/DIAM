@@ -3,7 +3,6 @@ from study_partner.models import Channel, Message, Student
 from study_partner.constants import WebSocketMessageType
 from channels.generic.websocket import JsonWebsocketConsumer
 from asgiref.sync import async_to_sync
-from datetime import datetime
 import json
 
 class ChatConsumer(JsonWebsocketConsumer):
@@ -40,21 +39,51 @@ class ChatConsumer(JsonWebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        message_type = text_data_json["type"]
+
+        if message_type == WebSocketMessageType.MESSAGE:
+            self.send_message(text_data_json)
+
+        if message_type == WebSocketMessageType.TOGGLE_LIKE:
+            msg_id = text_data_json["content"] 
+
+            msg = Message.objects.get(id=msg_id) 
+            user = self.scope["user"]
+
+            # Toggle like
+            if user in msg.liked_by.all():
+                msg.liked_by.remove(user)
+            else:
+                msg.liked_by.add(user)
+
+            # Count likes
+            likes = msg.liked_by.count()
+
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name, {
+                    "type": "toggle.like",
+                    "content": msg_id,
+                    "total_likes": likes,
+                    "liked_by": list(msg.liked_by.values_list("username", flat=True))
+                })
+
+
+    def chat_message(self, event):
+        user = event["sender"]
+        created_at = event["created_at"]
+
+        message = event["content"]
+        self.send_json({
+            "type": WebSocketMessageType.MESSAGE, 
+            "content": message, 
+            "sender": user,
+            "created_at": created_at,
+        })
+
+    def send_message(self, text_data_json):
         message = text_data_json["content"]
-        user = self.scope["user"]
-
-        is_admin = user.is_staff or user.is_superuser
-        
-        if is_admin: 
-            first_name = "Admin"
-            last_name = user.username 
-
-        else:
-            student = Student.objects.get(user=user)
-            first_name = student.first_name 
-            last_name = student.last_name 
-
         channel = Channel.objects.get(uc=self.room_name)
+        user = self.scope["user"]
 
         msg = Message(sender=user, to=channel, content=message)
         msg.save()
@@ -69,14 +98,11 @@ class ChatConsumer(JsonWebsocketConsumer):
                 }
         )
 
-    def chat_message(self, event):
-        message = event["content"]
-        user = event["sender"]
-        created_at = event["created_at"]
-        
+
+    def toggle_like(self, event):
         self.send_json({
-            "type": WebSocketMessageType.MESSAGE, 
-            "content": message, 
-            "sender": user,
-            "created_at": created_at,
+            "type": WebSocketMessageType.TOGGLE_LIKE, 
+            "message_id": event["content"], 
+            "total_likes": event["total_likes"],
+            "liked_by": event["liked_by"],
         })

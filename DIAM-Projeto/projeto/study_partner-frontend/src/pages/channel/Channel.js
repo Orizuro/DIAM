@@ -3,7 +3,7 @@ import './Channel.css';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
-import {  GET_LIKES_URL, getMessagesURL, TOGGLE_LIKE_URL, WebSocketMessageType, WS_URL } from '../../Constants';
+import { getMessagesURL, WebSocketMessageType, WS_URL } from '../../Constants';
 import { useAuth } from '../../hooks/AuthProvider';
 import { FaHeart } from 'react-icons/fa';
 
@@ -13,7 +13,7 @@ const Channel = () => {
 
   const [input, setInput] = useState("");
   const [channelName, setChannelName] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [messageLikes, setMessageLikes] = useState({});
 
@@ -35,11 +35,22 @@ const Channel = () => {
           break;
 
         case WebSocketMessageType.MESSAGE:
-          setMessages((prev) => [...prev, data]);
+          setMessages((prev) => ({ ...prev, data }));
           break;
 
         case WebSocketMessageType.CONNECTION_SUCCESS:
           setChannelName(data.channel_name);
+          break;
+
+        case WebSocketMessageType.TOGGLE_LIKE:
+          setMessages((prev) => ({
+            ...prev,
+            [data.message_id]: {
+              ...prev[data.message_id],
+              total_likes: data.total_likes,
+              liked_by: data.liked_by
+            }
+          }));
           break;
 
         default:
@@ -53,7 +64,6 @@ const Channel = () => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(getMessagesURL(channel_id), { withCredentials: true });
-        console.log(response.data.messages);
         setMessages(response.data.messages);
       } catch (error) {
         console.error("Erro ao carregar mensagens:", error);
@@ -78,25 +88,21 @@ const Channel = () => {
     });
   }
 
-  const didILiked = (message) => {
-    return message.sender === auth.currentUser.username && message.is_liked_by_sender
-  }
-
   const handleLike = (messageId) => {
-
-    setMessageLikes(prevLikes => {
-      const newLikes = { ...prevLikes };
-
-        // Check if is liked in backend
-        axios.post(TOGGLE_LIKE_URL, {"message_id": messageId})
-          .then(resquest => resquest.data)
-          .then((data) => {
-            newLikes[messageId] = data.total_likes;
-          })
-
-      return newLikes;
-    });
+    sendJsonMessage({ type: WebSocketMessageType.TOGGLE_LIKE, content: messageId })
   }
+
+  useEffect(() => {
+    Object.keys(messages).forEach((key) => {
+      const message = messages[key];
+      setMessageLikes((prev) => ({
+        ...prev,
+        [key]: message.liked_by.includes(auth.currentUser.username)
+      }));
+    })
+
+  }, [messages, auth.currentUser?.username])
+
   return (
     <>
       <div className='chat-container'>
@@ -104,19 +110,24 @@ const Channel = () => {
 
         <div className='chat-messages'>
           {
-            messages.map((message) =>
-              <div key={message.id} className={`chat-bubble ${message.sender === auth.currentUser.username ? 'me' : 'other'}`}>
-                {/* <div>PR: 1</div> */}
-                <div className="chat-text">{message.content}</div>
-                <div className="chat-meta">
-                  <span className="chat-name">{`${message.sender}`}</span>
-                  <span className="chat-time">{getHourMinute(message.created_at)}</span>
-                  <div className="like-button" onClick={() => handleLike(message.id)}>
-                    <FaHeart className={didILiked(message) ? "liked" : ""} />
-                    {<span className="like-count">{message.total_likes}</span>}
+            Object.keys(messages).map((key) => {
+              const message = messages[key];
+              return (
+                <div key={key} className={`chat-bubble ${message.sender === auth.currentUser.username ? 'me' : 'other'}`}>
+
+                  {/* <div>PR: 1</div> */}
+                  <div className="chat-text">{message.content}</div>
+                  <div className="chat-meta">
+                    <span className="chat-name">{`${message.sender}`}</span>
+                    <span className="chat-time">{getHourMinute(message.created_at)}</span>
+                    <div className="like-button" onClick={() => handleLike(key)}>
+                      <FaHeart className={messageLikes[key] ? "liked" : ""} />
+                      {<span className="like-count">{message.total_likes}</span>}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )
+            }
             )
           }
         </div>
@@ -125,7 +136,6 @@ const Channel = () => {
           <input
             type="text"
             placeholder="Type a message..."
-            value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           />

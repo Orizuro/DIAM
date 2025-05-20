@@ -1,4 +1,3 @@
-import { Alert } from "@mui/material"
 
 // export const BACKEND_HOST = '192.168.1.10:8000'
 export const BACKEND_HOST = 'localhost:8000'
@@ -35,9 +34,6 @@ export const WebSocketMessageType = {
   ERROR: "error",
   MESSAGE: "message",
   SUCCESS: "success",
-  CONNECTION_SUCCESS: "connection_success"
+  CONNECTION_SUCCESS: "connection_success",
+  TOGGLE_LIKE: "toggle_like"
 }
-
-// Alerts
-export const ERROR_ALERT = <Alert severity="error"></Alert>
-export const SUCCESS_ALERT = <Alert severity="success"></Alert>
