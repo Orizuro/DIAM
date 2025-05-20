@@ -286,11 +286,15 @@ def get_channels(request):
 def get_sessions(request):
     uc_code = request.data.get("uc")
     date = request.data.get("date")
+    username = request.data.get("username")
 
     filters = {}
 
     if uc_code:
         filters['channel__uc__code'] = uc_code
+    if username:
+        user_obj = User.objects.get(username=username)
+        filters['user'] = user_obj
 
     if not filters and not date:
         return Response(
@@ -315,6 +319,7 @@ def get_sessions(request):
     for session in sessions:
         session_dict = {
             "uc_name": session.channel.uc.name,
+            "uc_code": session.channel.uc.code,
             "user": request.user.username,
             "date_time": session.date_time,
         }

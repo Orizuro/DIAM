@@ -2,25 +2,47 @@ import React, { useEffect, useState } from "react";
 import UcCard from "../components/UsCard";
 import './styles/MinhasSessoes.css'
 import Calendar from "react-calendar";
-import { DELETE_SESSION_URL, getLocalDateString, GET_CHANNELS_BY_SESSIONS_URL } from "../Constants";
+import {DELETE_SESSION_URL, getLocalDateString, GET_CHANNELS_BY_SESSIONS_URL, GET_SESSIONS_URL} from "../Constants";
 import axios from "axios";
+import { Link } from 'react-router-dom';
+import { useAuth } from '../hooks/AuthProvider';
+
 
 const MinhasSessoes = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [myUcs, setMyUcs] = useState([]);
+  const auth = useAuth();
+  const uniqueUcsMap = new Map();
+
+  myUcs.forEach((session) => {
+    const { uc_code } = session;
+    if (!uniqueUcsMap.has(uc_code)) {
+      uniqueUcsMap.set(uc_code, {
+        uc_name: session.uc_name,
+        uc_code: session.uc_code,
+        user: session.user,
+        date_time: session.date_time,
+      });
+    }
+  });
+  const uniqueUcs = Array.from(uniqueUcsMap.values());
+
+
 
   const getSessions = async () => {
     const date = getLocalDateString(selectedDate);
     try {
       const response = await axios.post(
-        GET_CHANNELS_BY_SESSIONS_URL, { date: date },
+          GET_SESSIONS_URL, { username: auth.currentUser.username },
         { withCredentials: true }
       );
-      setMyUcs(response.data.channels || []);
+      setMyUcs(response.data.sessions || []);
     } catch (error) {
       console.error('Error fetching channels:', error);
     }
   };
+
+
 
   const deleteSession = async (channel_id) => {
     const date = getLocalDateString(selectedDate);
@@ -57,20 +79,17 @@ const MinhasSessoes = () => {
           <h3>Unidades Curriculares com sessões de estudo passadas e futuras</h3>
           <div className="uc-grid">
             {
-              myUcs.length !== 0 ?
-                myUcs.map((uc, ind) => (
-                  <a onClick={() => deleteSession(uc.code)}>
-
-                    <UcCard
-                      key={ind}
-                      name={uc.name}
-                      description={uc.description}
-                      code={uc.code}
-                    />
-                  </a>
-                ))
-                :
-                <p>Não há sessões neste dia</p>
+              uniqueUcs.length !== 0 ?
+                  uniqueUcs.map((uc, ind) => (
+                      <Link to={`/channel/${encodeURIComponent(uc.uc_code)}`} key={ind} style={{ textDecoration: 'none' }}>
+                        <UcCard
+                            name={uc.uc_name}
+                            description={`Sessões de estudo para ${uc.uc_name}`}
+                            code={uc.uc_code}
+                        />
+                      </Link>
+                  )) :
+                  <p>Não há sessões neste dia</p>
             }
           </div>
         </div>
@@ -80,6 +99,7 @@ const MinhasSessoes = () => {
         <div className="minhas-sessoes-column">
           <h3>Calendário de Agendamentos</h3>
           <Calendar
+              showNeighboringMonth={false}
             onChange={setSelectedDate}
             value={selectedDate}
           />
