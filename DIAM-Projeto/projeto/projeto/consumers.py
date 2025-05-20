@@ -41,11 +41,22 @@ class ChatConsumer(JsonWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message_type = text_data_json["type"]
 
+
+        print("Received WebSocket data:", text_data_json)
+
         if message_type == WebSocketMessageType.MESSAGE:
             self.send_message(text_data_json)
 
         if message_type == WebSocketMessageType.TOGGLE_LIKE:
-            msg_id = text_data_json["content"] 
+            try:
+                msg_id = int(text_data_json["message_id"])
+                msg = Message.objects.get(id=msg_id)
+            except (ValueError, Message.DoesNotExist):
+                self.send_json({
+                    "type": WebSocketMessageType.ERROR,
+                    "message": f"Invalid message ID: {text_data_json.get('message_id')}"
+                })
+                return
 
             msg = Message.objects.get(id=msg_id) 
             user = self.scope["user"]
@@ -62,7 +73,7 @@ class ChatConsumer(JsonWebsocketConsumer):
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name, {
                     "type": "toggle.like",
-                    "content": msg_id,
+                    "message_id": msg_id,
                     "total_likes": likes,
                     "liked_by": list(msg.liked_by.values_list("username", flat=True))
                 })
@@ -72,13 +83,14 @@ class ChatConsumer(JsonWebsocketConsumer):
         user = event["sender"]
         created_at = event["created_at"]
 
-        message = event["content"]
         self.send_json({
             "type": WebSocketMessageType.MESSAGE, 
-            "content": message, 
+            "content": event["content"], 
+            "message_id": event["message_id"], 
             "sender": user,
             "created_at": created_at,
             "liked_by": event["liked_by"],
+            "total_likes": event["total_likes"],
         })
 
     def send_message(self, text_data_json):
@@ -89,24 +101,24 @@ class ChatConsumer(JsonWebsocketConsumer):
         msg = Message(sender=user, to=channel, content=message)
         msg.save()
 
-        print(msg)
-
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name, {
                     "type": "chat.message", 
                     "content": message, 
+                    "message_id": msg.id, 
                     "sender": user.username,
                     "created_at": msg.created_at.isoformat(),
                     "liked_by": list(msg.liked_by.values_list("username", flat=True)),
+                    "total_likes": msg.liked_by.count(),
                 }
         )
-
 
     def toggle_like(self, event):
         self.send_json({
             "type": WebSocketMessageType.TOGGLE_LIKE, 
-            "message_id": event["content"], 
+            "message_id": event["message_id"], 
             "total_likes": event["total_likes"],
             "liked_by": event["liked_by"],
         })
+
