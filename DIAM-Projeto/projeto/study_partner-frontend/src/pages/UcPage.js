@@ -155,6 +155,7 @@ const UcPage = () => {
               <Calendar
                   showNeighboringMonth={false}
                 onChange={setSelectedDate}
+                showNeighboringMonth={false}
                 value={selectedDate}
                 tileClassName={getTileClassName}
               />
