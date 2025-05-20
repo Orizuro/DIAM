@@ -154,6 +154,7 @@ const UcPage = () => {
             <div className="react-calendar">
               <Calendar
                 onChange={setSelectedDate}
+                showNeighboringMonth={false}
                 value={selectedDate}
                 tileClassName={getTileClassName}
               />

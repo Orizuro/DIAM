@@ -78,6 +78,7 @@ class ChatConsumer(JsonWebsocketConsumer):
             "content": message, 
             "sender": user,
             "created_at": created_at,
+            "liked_by": event["liked_by"],
         })
 
     def send_message(self, text_data_json):
@@ -88,6 +89,8 @@ class ChatConsumer(JsonWebsocketConsumer):
         msg = Message(sender=user, to=channel, content=message)
         msg.save()
 
+        print(msg)
+
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name, {
@@ -95,6 +98,7 @@ class ChatConsumer(JsonWebsocketConsumer):
                     "content": message, 
                     "sender": user.username,
                     "created_at": msg.created_at.isoformat(),
+                    "liked_by": list(msg.liked_by.values_list("username", flat=True)),
                 }
         )
 
