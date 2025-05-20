@@ -287,8 +287,6 @@ def get_sessions(request):
     uc_code = request.data.get("uc")
     date = request.data.get("date")
 
-    print(date)
-
     filters = {}
 
     if uc_code:
@@ -325,3 +323,37 @@ def get_sessions(request):
 
     return Response({"sessions": data})
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_channel_by_session(request):
+    date = request.data.get("date")
+    print(date)
+
+    if not date:
+        return Response(
+            {"error": "At least one filter (uc, username or date) is required"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        selected_date = parse(date).date()
+        sessions = Session.objects.filter(date_time__date=selected_date, user=request.user)
+
+    except:
+        return Response(
+            {"error": "Invalid date format. Use YYYY-MM-DD"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    data = []
+    for session in sessions:
+        session_dict = {
+            "user": session.user.username,
+            "code": session.channel.uc.code,
+            "name": session.channel.uc.name,
+            "description": session.date_time,
+        }
+
+        data.append(session_dict)
+
+    return Response({"channels": data})

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Channel from '../pages/channel/Channel';
 import './styles/UcPage.css';
-import { GET_SESSIONS_URL, CREATE_SESSION_URL, DELETE_SESSION_URL } from '../Constants';
+import { GET_SESSIONS_URL, CREATE_SESSION_URL, DELETE_SESSION_URL, getLocalDateString } from '../Constants';
 
 const UcPage = () => {
   const { channel_id } = useParams();
@@ -82,13 +82,6 @@ const UcPage = () => {
   useEffect(() => {
     getSessions();
   }, [selectedDate]);
-
-  const getLocalDateString = (date) => {
-    const year = date.getFullYear();
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const day = `${date.getDate()}`.padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
 
   return (
     <div className="chat-with-calendar-container">
