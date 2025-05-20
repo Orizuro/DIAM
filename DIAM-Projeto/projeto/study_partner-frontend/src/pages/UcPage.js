@@ -153,7 +153,6 @@ const UcPage = () => {
           <div className="calendar-scroll-container">
 
               <Calendar
-                  showNeighboringMonth={false}
                 onChange={setSelectedDate}
                 showNeighboringMonth={false}
                 value={selectedDate}
