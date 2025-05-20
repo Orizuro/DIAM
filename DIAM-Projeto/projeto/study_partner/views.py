@@ -10,6 +10,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from datetime import datetime
 from dateutil.parser import parse
+from django.shortcuts import get_object_or_404
 
 
 @api_view(['POST'])
@@ -47,6 +48,7 @@ def login_view(request):
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def logout_view(request):
     logout(request)
 
@@ -63,10 +65,11 @@ def get_messages(request):
     channel_code = request.GET["channel_id"]
     channel = Channel.objects.get(uc=channel_code)
     messages = Message.objects.filter(to=channel)
-    data = []
+
+    data = {}
     for message in messages:
-        id = message.sender_id
-        user = User.objects.get(id=id)
+        user = message.sender
+
         is_admin = user.is_staff or user.is_superuser
 
         if is_admin:
@@ -83,9 +86,10 @@ def get_messages(request):
             "last_name": last_name,
             "content": message.content,
             "created_at": message.created_at,
-            "likes": "empty"
+            "total_likes": message.liked_by.count(), 
+            "liked_by": list(message.liked_by.values_list("username", flat=True))
         }
-        data.append(msg)
+        data[message.id] = msg
 
     return Response({'messages': data})
 
@@ -277,14 +281,8 @@ def get_channels(request):
     except Student.DoesNotExist:
         return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
 
-
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def get_my_channels():
-
-
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_sessions(request):
     uc_code = request.data.get("uc")
     date = request.data.get("date")
@@ -305,7 +303,6 @@ def get_sessions(request):
     if date:
         try:
             selected_date = parse(date).date()
-
             sessions = sessions.filter(date_time__date=selected_date)
 
         except:
@@ -318,7 +315,7 @@ def get_sessions(request):
     for session in sessions:
         session_dict = {
             "uc_name": session.channel.uc.name,
-            "user": request.user,
+            "user": request.user.username,
             "date_time": session.date_time,
         }
 
@@ -326,3 +323,37 @@ def get_sessions(request):
 
     return Response({"sessions": data})
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_channel_by_session(request):
+    date = request.data.get("date")
+    print(date)
+
+    if not date:
+        return Response(
+            {"error": "At least one filter (uc, username or date) is required"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        selected_date = parse(date).date()
+        sessions = Session.objects.filter(date_time__date=selected_date, user=request.user)
+
+    except:
+        return Response(
+            {"error": "Invalid date format. Use YYYY-MM-DD"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    data = []
+    for session in sessions:
+        session_dict = {
+            "user": session.user.username,
+            "code": session.channel.uc.code,
+            "name": session.channel.uc.name,
+            "description": session.date_time,
+        }
+
+        data.append(session_dict)
+
+    return Response({"channels": data})

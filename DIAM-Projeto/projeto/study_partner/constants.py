@@ -5,3 +5,4 @@ class WebSocketMessageType(str, Enum):
     MESSAGE = "message"
     SUCCESS = "success"
     CONNECTION_SUCCESS = "connection_success"
+    TOGGLE_LIKE = "toggle_like"

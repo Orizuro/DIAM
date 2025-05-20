@@ -56,7 +56,7 @@ def create_users(self):
 
     adminUsers = {
         "misael_admin": {"email": "maaoo@iscte-iul.pt"},
-        "catarina_admin": {"email": "cscaa11@iscte-iul.pt" },
+        "cata_admin": {"email": "cscaa11@iscte-iul.pt" },
         "sasha_admin": {"email": "apnel1@iscte-iul.pt"}
     }
 

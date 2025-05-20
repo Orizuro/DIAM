@@ -1,4 +1,3 @@
-import { Alert } from "@mui/material"
 
 // export const BACKEND_HOST = '192.168.1.10:8000'
 export const BACKEND_HOST = 'localhost:8000'
@@ -15,6 +14,8 @@ export const GET_UCS_URL = `http://${BACKEND_HOST}/api/get-ucs/`
 export const CREATE_SESSION_URL = `http://${BACKEND_HOST}/api/create-session/`
 export const DELETE_SESSION_URL = `http://${BACKEND_HOST}/api/delete-session/`
 
+export const GET_CHANNELS_BY_SESSIONS_URL = `http://${BACKEND_HOST}/api/get_channels_by_sessions/`
+
 
 export const getMessagesURL = (channel_id) => {
   return `http://${BACKEND_HOST}/api/messages/?channel_id=${channel_id}`
@@ -30,9 +31,13 @@ export const WebSocketMessageType = {
   ERROR: "error",
   MESSAGE: "message",
   SUCCESS: "success",
-  CONNECTION_SUCCESS: "connection_success"
+  CONNECTION_SUCCESS: "connection_success",
+  TOGGLE_LIKE: "toggle_like"
 }
 
-// Alerts
-export const ERROR_ALERT = <Alert severity="error"></Alert>
-export const SUCCESS_ALERT = <Alert severity="success"></Alert>
+export const getLocalDateString = (date) => {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
