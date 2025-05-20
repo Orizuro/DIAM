@@ -28,7 +28,7 @@ const Channel = () => {
 
     onMessage: (e) => {
       const data = JSON.parse(e.data)
-      console.log(data)
+      console.log("Received Message ", data)
       switch (data.type) {
         case WebSocketMessageType.ERROR:
           console.error(data.message);
@@ -95,10 +95,12 @@ const Channel = () => {
   useEffect(() => {
     Object.keys(messages).forEach((key) => {
       const message = messages[key];
-      setMessageLikes((prev) => ({
-        ...prev,
-        [key]: message.liked_by.includes(auth.currentUser.username)
-      }));
+      if(message !== undefined){
+        setMessageLikes((prev) => ({
+          ...prev,
+          [key]: message.liked_by.includes(auth.currentUser.username)
+        }));
+      }
     })
 
   }, [messages, auth.currentUser?.username])
