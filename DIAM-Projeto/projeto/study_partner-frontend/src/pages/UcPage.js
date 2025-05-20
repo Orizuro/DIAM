@@ -15,9 +15,9 @@ const UcPage = () => {
   const generateTimeSlots = (date) => {
     const slots = [];
     const start = new Date(date);
-    start.setHours(0, 0, 0, 0);
+    start.setHours(3, 0, 0, 0);
 
-    for (let i = 0; i < 48; i++) {
+    for (let i = 0; i < 43; i++) {
       const slot = new Date(start);
       slot.setMinutes(i * 30);
       slots.push(slot);
@@ -95,12 +95,7 @@ const UcPage = () => {
       <div className="calendar-section">
         <div className="calendar-scroll-container">
           <div className="react-calendar">
-            <Calendar onChange={(date) => {
-              console.log(getLocalDateString(date));
-              setSelectedDate(date);
-            }
-            }
-              value={selectedDate} />
+            <Calendar onChange={setSelectedDate} value={selectedDate} />
           </div>
 
           <div className="session-list">
