@@ -39,5 +39,7 @@ urlpatterns = [
     path('api/create-uc/', views.create_uc),
     path('api/delete-uc/', views.delete_uc),
     path('api/get-ucs/', views.get_ucs),
+
+    path('api/toggle-like/', views.toggle_like, name='toggle_like'),
 ]
 

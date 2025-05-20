@@ -48,6 +48,7 @@ def login_view(request):
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def logout_view(request):
     logout(request)
 
@@ -66,8 +67,8 @@ def get_messages(request):
     messages = Message.objects.filter(to=channel)
     data = []
     for message in messages:
-        id = message.sender_id
-        user = User.objects.get(id=id)
+        user = message.sender
+
         is_admin = user.is_staff or user.is_superuser
 
         if is_admin:
@@ -78,6 +79,7 @@ def get_messages(request):
             first_name = student.first_name
             last_name = student.last_name
 
+
         msg = {
             "id": message.id,
             "sender": user.username,
@@ -85,7 +87,8 @@ def get_messages(request):
             "last_name": last_name,
             "content": message.content,
             "created_at": message.created_at,
-            "likes": "empty"
+            "total_likes": message.total_likes, 
+            "is_liked_by_sender": message.is_liked_by_sender 
         }
         data.append(msg)
 
@@ -326,27 +329,29 @@ def get_sessions(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def toggle_like(request):
+    print("HELOOOOO WORLD")
     message_id = request.data.get('message_id')
-    if not message_id:
-        return Response({'error': 'message_id is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    message = get_object_or_404(Message, id=message_id)
+    try:
+        message = Message.objects.get(id=message_id)
+    except Message.DoesNotExist:
+        return Response({'error': 'Message not found'}, status=404)
 
-    user = request.user
-    if user in message.users_who_liked.all():
-        message.users_who_liked.remove(user)
-        liked = False
+    # Toggle like status based on whether sender has already liked
+    if message.is_liked_by_sender:
+        message.total_likes = max(message.total_likes - 1, 0)
+        message.is_liked_by_sender = False
+        action = "liked"
     else:
-        message.users_who_liked.add(user)
-        liked = True
+        message.total_likes += 1
+        message.is_liked_by_sender = True
+        action = "unliked"
+
+    message.save()
 
     return Response({
         'message_id': message.id,
-        'liked': liked,
-        'total_likes': message.likes
-    }, status=status.HTTP_200_OK)
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def get_message_likes(request):
-    pass
+        'total_likes': message.total_likes,
+        'is_liked_by_sender': message.is_liked_by_sender,
+        'action': action
+    })

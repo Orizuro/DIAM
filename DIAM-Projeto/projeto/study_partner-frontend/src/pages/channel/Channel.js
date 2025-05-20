@@ -3,7 +3,7 @@ import './Channel.css';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
-import {  getMessagesURL, WebSocketMessageType, WS_URL } from '../../Constants';
+import {  GET_LIKES_URL, getMessagesURL, TOGGLE_LIKE_URL, WebSocketMessageType, WS_URL } from '../../Constants';
 import { useAuth } from '../../hooks/AuthProvider';
 import { FaHeart } from 'react-icons/fa';
 
@@ -77,14 +77,23 @@ const Channel = () => {
       minute: '2-digit',
     });
   }
+
+  const didILiked = (message) => {
+    return message.sender === auth.currentUser.username && message.is_liked_by_sender
+  }
+
   const handleLike = (messageId) => {
+
     setMessageLikes(prevLikes => {
       const newLikes = { ...prevLikes };
-      if (newLikes[messageId]) {
-        newLikes[messageId] = newLikes[messageId] + 1;
-      } else {
-        newLikes[messageId] = 1;
-      }
+
+        // Check if is liked in backend
+        axios.post(TOGGLE_LIKE_URL, {"message_id": messageId})
+          .then(resquest => resquest.data)
+          .then((data) => {
+            newLikes[messageId] = data.total_likes;
+          })
+
       return newLikes;
     });
   }
@@ -95,16 +104,16 @@ const Channel = () => {
 
         <div className='chat-messages'>
           {
-            messages.map((message, ind) =>
-              <div key={ind} className={`chat-bubble ${message.sender === auth.currentUser.username ? 'me' : 'other'}`}>
+            messages.map((message) =>
+              <div key={message.id} className={`chat-bubble ${message.sender === auth.currentUser.username ? 'me' : 'other'}`}>
                 {/* <div>PR: 1</div> */}
                 <div className="chat-text">{message.content}</div>
                 <div className="chat-meta">
                   <span className="chat-name">{`${message.sender}`}</span>
                   <span className="chat-time">{getHourMinute(message.created_at)}</span>
-                  <div className="like-button" onClick={() => handleLike(ind)}>
-                    <FaHeart className={messageLikes[ind] ? "liked" : ""} />
-                    {messageLikes[ind] ? <span className="like-count">{messageLikes[ind]}</span> : null}
+                  <div className="like-button" onClick={() => handleLike(message.id)}>
+                    <FaHeart className={didILiked(message) ? "liked" : ""} />
+                    {<span className="like-count">{message.total_likes}</span>}
                   </div>
                 </div>
               </div>
