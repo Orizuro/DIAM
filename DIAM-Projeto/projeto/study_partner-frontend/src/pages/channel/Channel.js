@@ -28,21 +28,25 @@ const Channel = () => {
 
     onMessage: (e) => {
       const data = JSON.parse(e.data)
-      console.log("Received Message ", data)
       switch (data.type) {
         case WebSocketMessageType.ERROR:
           console.error(data.message);
           break;
 
         case WebSocketMessageType.MESSAGE:
-          setMessages((prev) => ({ ...prev, data }));
-          break;
+            console.log("Received Message to message", data)
+            setMessages((prev) => ({
+              ...prev, 
+              [data.message_id]: data
+            }));
+            break;
 
         case WebSocketMessageType.CONNECTION_SUCCESS:
           setChannelName(data.channel_name);
           break;
 
         case WebSocketMessageType.TOGGLE_LIKE:
+          console.log("Received Message to ToggleLike", data)
           setMessages((prev) => ({
             ...prev,
             [data.message_id]: {
@@ -89,18 +93,16 @@ const Channel = () => {
   }
 
   const handleLike = (messageId) => {
-    sendJsonMessage({ type: WebSocketMessageType.TOGGLE_LIKE, content: messageId })
+    sendJsonMessage({ type: WebSocketMessageType.TOGGLE_LIKE, message_id: messageId })
   }
 
   useEffect(() => {
     Object.keys(messages).forEach((key) => {
       const message = messages[key];
-      if(message !== undefined){
-        setMessageLikes((prev) => ({
-          ...prev,
-          [key]: message.liked_by.includes(auth.currentUser.username)
-        }));
-      }
+      setMessageLikes((prev) => ({
+        ...prev,
+        [key]: message.liked_by.includes(auth.currentUser.username)
+      }));
     })
 
   }, [messages, auth.currentUser?.username])
