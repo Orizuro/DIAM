@@ -14,11 +14,6 @@ export const GET_UCS_URL = `http://${BACKEND_HOST}/api/get-ucs/`
 export const CREATE_SESSION_URL = `http://${BACKEND_HOST}/api/create-session/`
 export const DELETE_SESSION_URL = `http://${BACKEND_HOST}/api/delete-session/`
 
-export const TOGGLE_LIKE_URL = `http://${BACKEND_HOST}/api/toggle-like/`
-export const GET_LIKES_URL = `http://${BACKEND_HOST}/api/get-likes/`
-
-
-
 
 export const getMessagesURL = (channel_id) => {
   return `http://${BACKEND_HOST}/api/messages/?channel_id=${channel_id}`

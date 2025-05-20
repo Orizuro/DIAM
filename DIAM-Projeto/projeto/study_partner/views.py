@@ -282,10 +282,12 @@ def get_channels(request):
         return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_sessions(request):
     uc_code = request.data.get("uc")
     date = request.data.get("date")
+
+    print(date)
 
     filters = {}
 
@@ -303,7 +305,6 @@ def get_sessions(request):
     if date:
         try:
             selected_date = parse(date).date()
-
             sessions = sessions.filter(date_time__date=selected_date)
 
         except:
@@ -316,7 +317,7 @@ def get_sessions(request):
     for session in sessions:
         session_dict = {
             "uc_name": session.channel.uc.name,
-            "user": request.user,
+            "user": request.user.username,
             "date_time": session.date_time,
         }
 
@@ -324,33 +325,3 @@ def get_sessions(request):
 
     return Response({"sessions": data})
 
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def toggle_like(request):
-    print("HELOOOOO WORLD")
-    message_id = request.data.get('message_id')
-
-    try:
-        message = Message.objects.get(id=message_id)
-    except Message.DoesNotExist:
-        return Response({'error': 'Message not found'}, status=404)
-
-    # Toggle like status based on whether sender has already liked
-    if message.is_liked_by_sender:
-        message.total_likes = max(message.total_likes - 1, 0)
-        message.is_liked_by_sender = False
-        action = "liked"
-    else:
-        message.total_likes += 1
-        message.is_liked_by_sender = True
-        action = "unliked"
-
-    message.save()
-
-    return Response({
-        'message_id': message.id,
-        'total_likes': message.total_likes,
-        'is_liked_by_sender': message.is_liked_by_sender,
-        'action': action
-    })

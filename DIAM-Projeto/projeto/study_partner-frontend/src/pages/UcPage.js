@@ -4,13 +4,13 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Channel from '../pages/channel/Channel';
 import './styles/UcPage.css';
-import {GET_SESSIONS_URL, CREATE_SESSION_URL, DELETE_SESSION_URL} from '../Constants';
+import { GET_SESSIONS_URL, CREATE_SESSION_URL, DELETE_SESSION_URL } from '../Constants';
 
 const UcPage = () => {
   const { channel_id } = useParams();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [sessions, setSessions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const generateTimeSlots = (date) => {
     const slots = [];
@@ -27,15 +27,15 @@ const UcPage = () => {
   };
 
   const getSessions = async () => {
-    setLoading(true);
+    const date = getLocalDateString(selectedDate);
     try {
       const response = await axios.post(
-          GET_SESSIONS_URL,
-          {
-            uc: channel_id,
-            date: selectedDate.toISOString(), // 'YYYY-MM-DD'
-          },
-          { withCredentials: true }
+        GET_SESSIONS_URL,
+        {
+          uc: channel_id,
+          date: date,
+        },
+        { withCredentials: true }
       );
       setSessions(response.data.sessions || []);
     } catch (error) {
@@ -52,22 +52,22 @@ const UcPage = () => {
       if (isCurrentlyBooked) {
         // DELETE session
         await axios.post(
-            DELETE_SESSION_URL,
-            {
-              uc: channel_id,
-              date_time: iso,
-            },
-            { withCredentials: true }
+          DELETE_SESSION_URL,
+          {
+            uc: channel_id,
+            date_time: iso,
+          },
+          { withCredentials: true }
         );
       } else {
         // CREATE session
         await axios.post(
-            CREATE_SESSION_URL,
-            {
-              uc: channel_id,
-              date_time: iso,
-            },
-            { withCredentials: true }
+          CREATE_SESSION_URL,
+          {
+            uc: channel_id,
+            date_time: iso,
+          },
+          { withCredentials: true }
         );
       }
 
@@ -83,51 +83,62 @@ const UcPage = () => {
     getSessions();
   }, [selectedDate]);
 
+  const getLocalDateString = (date) => {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   return (
-      <div className="chat-with-calendar-container">
-        <div className="calendar-section">
-          <div className="calendar-scroll-container">
-            <div className="react-calendar">
-              <Calendar onChange={setSelectedDate} value={selectedDate} />
-            </div>
+    <div className="chat-with-calendar-container">
+      <div className="calendar-section">
+        <div className="calendar-scroll-container">
+          <div className="react-calendar">
+            <Calendar onChange={(date) => {
+              console.log(getLocalDateString(date));
+              setSelectedDate(date);
+            }
+            }
+              value={selectedDate} />
+          </div>
 
-            <div className="session-list">
-              <h3>Sessions on {selectedDate.toDateString()}</h3>
-              {loading ? (
-                  <p>Loading...</p>
-              ) : (
-                  <div className="time-slot-list">
-                    {generateTimeSlots(selectedDate).map((slot, i) => {
-                      const iso = slot.toISOString();
-                      const isBooked = sessions.some(
-                          (s) => new Date(s.date_time).toISOString() === iso
-                      );
+          <div className="session-list">
+            <h3>Sessions on {selectedDate.toDateString()}</h3>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <div className="time-slot-list">
+                {generateTimeSlots(selectedDate).map((slot, i) => {
+                  const isBooked = sessions.some(
+                    (s) => new Date(s.date_time).getTime() === slot.getTime()
+                  );
 
-                      return (
-                          <label key={i} className="time-slot">
-                            <input
-                                type="checkbox"
-                                checked={isBooked}
-                                onChange={() => handleSlotToggle(slot, isBooked)}
-                            />
-                            {slot.toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            })}
-                          </label>
-                      );
-                    })}
-                  </div>
-              )}
-            </div>
+                  return (
+                    <label key={i} className="time-slot">
+                      <input
+                        type="checkbox"
+                        checked={isBooked}
+                        onChange={() => handleSlotToggle(slot, isBooked)}
+                      />
+                      {slot.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </label>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
-
-
-        <div className="chat-section">
-          <Channel />
-        </div>
       </div>
+
+
+      <div className="chat-section">
+        <Channel />
+      </div>
+    </div>
   );
 };
 
