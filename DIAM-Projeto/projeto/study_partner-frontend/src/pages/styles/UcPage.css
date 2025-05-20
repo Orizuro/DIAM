@@ -5,11 +5,24 @@
     border: 1px solid #ccc;
     box-shadow: 0 0 8px rgba(0,0,0,0.05);
     background-color: #eee;
+
+
+}
+.react-calendar__month-view__days {
+
+
+
 }
 
-/*.react-calendar__tile {*/
-/*    background-color: #868686;*/
-/*}*/
+.react-calendar__tile {
+    height: 40px;
+    background-color: #868686;
+    box-sizing: border-box;
+    border: 3px solid #eeeeee;
+
+
+
+}
 
 .chat-with-calendar-container {
     display: flex;
@@ -217,3 +230,11 @@ abbr[title] {
         width: 95%;
     }
 }
+
+
+
+
+
+
+
+

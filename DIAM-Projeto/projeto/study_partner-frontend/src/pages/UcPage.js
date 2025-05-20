@@ -151,13 +151,14 @@ const UcPage = () => {
       <div className="chat-with-calendar-container">
         <div className="calendar-section">
           <div className="calendar-scroll-container">
-            <div className="react-calendar">
+
               <Calendar
+                  showNeighboringMonth={false}
                 onChange={setSelectedDate}
                 value={selectedDate}
                 tileClassName={getTileClassName}
               />
-            </div>
+
 
             <div className="session-list-container">
               <h3 className="session-list-header">Sessions on {selectedDate.toDateString()}</h3>
