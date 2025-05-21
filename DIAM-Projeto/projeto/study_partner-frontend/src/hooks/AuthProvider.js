@@ -20,13 +20,13 @@ const AuthProvider = ({ children }) => {
   }, [currentUser])
 
   axios.interceptors.request.use(
-      (config) => {
-        if (currentUser && currentUser.token) {
-          config.headers.Authorization = `Token ${currentUser.token}`;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
+    (config) => {
+      if (currentUser && currentUser.token) {
+        config.headers.Authorization = `Token ${currentUser.token}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
   );
 
   const login = async (username, password) => {
@@ -44,16 +44,25 @@ const AuthProvider = ({ children }) => {
       return false;
     }
   };
-  const signup = async (username, password) => {
+  const signup = async ({ email, username, firstName, lastName, course, password }) => {
     try {
-      const response = await axios.post(Constants.SIGNUP_URL, { username, password }, { withCredentials: true });
-      // Assuming response.data.message exists on success
+      console.log(email, username)
+      const response = await axios.post(
+        Constants.SIGNUP_URL,
+        {
+          email,
+          username,
+          firstName,
+          lastName,
+          course,
+          password
+        },
+        { withCredentials: true });
       return { success: true, message: response.data.message };
     } catch (error) {
-      // Extract error message from backend if exists
       const errMsg =
-          error.response?.data?.error ||
-          "Erro ao registrar usuário. Tente novamente.";
+        error.response?.data?.error ||
+        "Erro ao registrar utilizador. Tente novamente.";
       return { success: false, message: errMsg };
     }
   };
@@ -71,9 +80,9 @@ const AuthProvider = ({ children }) => {
 
 
   return (
-      <AuthContext.Provider value={{ login, logout, signup, currentUser, isAuthenticated }}>
-        {children}
-      </AuthContext.Provider>
+    <AuthContext.Provider value={{ login, logout, signup, currentUser, isAuthenticated }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 

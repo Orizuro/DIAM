@@ -1,30 +1,69 @@
+from django.core.validators import EmailValidator
 from .models import Channel, Message, Session, Student, Uc
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
-from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status 
 from rest_framework.response import Response 
 from django.contrib.auth.models import User 
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from datetime import datetime
 from dateutil.parser import parse
+from django.db.models import Q
 
 
 @api_view(['POST'])
 def signup(request):
     username = request.data.get('username')
     password = request.data.get('password')
+    email = request.data.get("email", "")
+    first_name = request.data.get("firstName")
+    last_name = request.data.get("lastName")
+    course = request.data.get("course")
 
     if username is None or password is None:
         return Response({'error': 'invalid username/password'}, status=status.HTTP_400_BAD_REQUEST)
 
-    if User.objects.filter(username = username).exists():
-        return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user = User.objects.create_user(username=username, password=password)
-    return Response({'message': 'User ' + user.username + ' created successfully'}, status=status.HTTP_201_CREATED)
+    if not all([email, first_name, last_name, course, course]):
+        return Response(
+            {"error": "Missing required fields."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    if User.objects.filter(Q(username = username) | Q(email = email)).exists():
+        return Response({'error': 'Username or email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = User.objects.create_user(
+        first_name=first_name,
+        last_name=last_name,
+        email=email, 
+        username=username, 
+        password=password
+    )
+
+    try:
+        # Create the Student
+        student = Student.objects.create(
+            user=user,
+            first_name=first_name,
+            last_name=last_name,
+            course=course
+        )
+
+        return Response({
+            "message": "User and Student created successfully!",
+            "student": {
+                "id": student.id,
+                "username": user.username,
+                "email": user.email,
+                "first_name": student.first_name,
+                "last_name": student.last_name,
+                "course": student.course,
+            }
+        }, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -56,7 +95,33 @@ def logout_view(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_view(request):
-    return Response({'username': request.user.username})
+    try:
+        user = request.user
+        
+        # Base user data
+        user_data = {
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+        
+        # Check if user is a student
+        try:
+            student = Student.objects.get(user=user)
+            user_data.update({
+                'course': student.course
+            })
+        except Student.DoesNotExist:
+            pass  # User is not a student
+        
+        return Response(user_data, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

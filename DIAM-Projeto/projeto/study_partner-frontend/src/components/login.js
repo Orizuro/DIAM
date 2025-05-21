@@ -1,122 +1,88 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/AuthProvider";
+import Signup from "./Signup";
 import "./styles/login.css";
 
 function Login({ onClose }) {
-    const auth = useAuth();
-    const [mode, setMode] = useState("login"); // login or signup
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+  const auth = useAuth();
+  const [isLogin, setIsLogin] = useState(true)
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-    const stopPropagation = (e) => e.stopPropagation();
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
-        setSuccessMessage("");
+  const stopPropagation = (e) => e.stopPropagation();
 
-        if (mode === "signup") {
-            if (password !== confirmPassword) {
-                setError("As senhas não coincidem.");
-                return;
-            }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Heloooolloo")
+    try {
+      const success = await auth.login(username, password);
+      if (success) {
+        onClose();
+      } else {
+        setError("utilizador ou senha inválidos.");
+      }
+    } catch {
+      setError("Erro ao fazer login. Tente novamente.");
+    }
+  };
 
-            const result = await auth.signup(username, password);
+  if (!isLogin)
+    return <Signup onClose={onClose} />;
 
-            if (result.success) {
-                // Show success message inside popup
-                setSuccessMessage(result.message);
-                // Clear inputs
-                setUsername("");
-                setPassword("");
-                setConfirmPassword("");
-                // Optional: Switch back to login after a delay or let user manually switch
-                // setTimeout(() => setMode("login"), 3000);
-            } else {
-                setError(result.message);
-            }
-            return;
-        }
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={stopPropagation}>
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Utilizador"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="modal-input"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="modal-input"
+            required
+          />
 
-        // LOGIN mode
-        try {
-            const success = await auth.login(username, password);
-            if (success) {
-                onClose();
-            } else {
-                setError("Usuário ou senha inválidos.");
-            }
-        } catch {
-            setError("Erro ao fazer login. Tente novamente.");
-        }
-    };
+          {error && <p className="error-message-login">{error}</p>}
+          {successMessage && <p className="success-message-login">{successMessage}</p>}
 
-    return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal" onClick={stopPropagation}>
-                <h2>{mode === "login" ? "Login" : "Criar Conta"}</h2>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Usuário"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="modal-input"
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder="Senha"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="modal-input"
-                        required
-                    />
-                    {mode === "signup" && (
-                        <input
-                            type="password"
-                            placeholder="Confirmar senha"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="modal-input"
-                            required
-                        />
-                    )}
+          <button type="submit" className="modal-submit">
+            Entrar
+          </button>
 
-                    {error && <p className="error-message-login">{error}</p>}
-                    {successMessage && <p className="success-message-login">{successMessage}</p>}
+          <p className="switch-text">
+            Ainda não tem conta?{" "}
+            <button
+              type="button"
+              className="switch-link"
+              onClick={() => {
+                setError("");
+                setSuccessMessage("");
+                setIsLogin(false);
+              }}
+            >
+              Criar conta
+            </button>
+          </p>
+        </form>
 
-                    <button type="submit" className="modal-submit">
-                        {mode === "login" ? "Entrar" : "Registrar"}
-                    </button>
-
-                    <p className="switch-text">
-                        {mode === "login"
-                            ? "Ainda não tem conta?"
-                            : "Já tem uma conta?"}{" "}
-                        <button
-                            type="button"
-                            className="switch-link"
-                            onClick={() => {
-                                setError("");
-                                setSuccessMessage("");
-                                setMode(mode === "login" ? "signup" : "login");
-                            }}
-                        >
-                            {mode === "login" ? "Criar conta" : "Fazer login"}
-                        </button>
-                    </p>
-                </form>
-
-                <button className="modal-close" onClick={onClose}>
-                    Fechar
-                </button>
-            </div>
-        </div>
-    );
+        <button className="modal-close" onClick={onClose}>
+          Fechar
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default Login;

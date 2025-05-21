@@ -1,36 +1,37 @@
 .sessoes-page {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 1rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
 }
 
 .tabs {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
 
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
+.tabs>button {
+  margin: 2px;
 }
 
 .tab {
-    flex: 1;
-    padding: 0.75rem 0;
-    text-align: center;
-    background-color: #262724;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    border: none;
+  flex: 1;
+  padding: 0.75rem 0;
+  text-align: center;
+  background-color: #262724;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border: none;
 }
 
 .tab.active {
-    background-color: #00329b;
-    color: white;
+  background-color: #00329b;
+  color: white;
 }
 
 .tab-content {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
-
-

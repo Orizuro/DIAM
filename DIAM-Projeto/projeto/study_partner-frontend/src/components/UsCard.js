@@ -28,15 +28,15 @@ const UcCard = ({ name, description, code, onEdit, onDelete }) => {
     <div className="uc-card" onClick={handleClick} style={{ cursor: 'pointer', position: 'relative' }}>
       <div className="card-header">
         <h4>{name}</h4>
-        <div className="menu-container">
-          <button className="menu-button" onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}>⋮</button>
-          {showMenu && auth.currentUser.isAdmin && (
+        {showMenu && auth.currentUser.isAdmin && (
+          <div className="menu-container">
+            <button className="menu-button" onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}>⋮</button>
             <div className="dropdown-menu">
               <div onClick={handleEdit}>Edit</div>
               <div onClick={handleDelete}>Delete</div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
       <p>{description}</p>
       <div className="uc-code">ID: {code}</div>

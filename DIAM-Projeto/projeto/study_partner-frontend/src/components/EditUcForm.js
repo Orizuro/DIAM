@@ -9,8 +9,8 @@ const EditUcForm = ({ ucId, ucName, ucDescription, onClose }) => {
 
   const handleSubmit = () => {
     async function editdUc() {
-        await axios.post(EDIT_UC_URL, {id: ucId, name, description }, { withCredentials: true }) 
-          .catch(error => alert("Error: " + error.response.data.error));
+      await axios.post(EDIT_UC_URL, { id: ucId, name, description }, { withCredentials: true })
+        .catch(error => alert("Error: " + error.response.data.error));
     }
 
     editdUc().then(() => onClose()).then(() => window.location.reload());
@@ -36,7 +36,7 @@ const EditUcForm = ({ ucId, ucName, ucDescription, onClose }) => {
           onChange={(e) => setDescription(e.target.value)}
         />
         <button className="modal-submit" onClick={handleSubmit}>
-          Edit 
+          Edit
         </button>
         <button className="modal-close" onClick={onClose}>
           Cancel

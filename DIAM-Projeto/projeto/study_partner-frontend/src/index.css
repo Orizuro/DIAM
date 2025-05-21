@@ -67,7 +67,7 @@ figcaption {
 
 
 body {
-  background-color: rgb(215, 216, 213);;
+  background-color: rgb(215, 216, 213);
   color: rgb(38, 39, 36);
   padding: 0;
 
@@ -79,8 +79,8 @@ body {
   padding: 10px;
   margin: 1px;
   display: flex;
-
-
+  flex: 1;
+  min-height: 90vh;
 }
 
 .MainBox {
@@ -185,16 +185,19 @@ textarea {
   border: 1px solid darkblue;
   text-align: center;
 }
+
 #box_links {
   width: 32%;
   background-color: rgb(215, 216, 213);
   display: inline-block;
 }
+
 #box_copyrights {
   width: 32%;
   background-color: rgb(215, 216, 213);
   display: inline-block;
 }
+
 #box_socialmedia {
   width: 32%;
   background-color: rgb(215, 216, 213);
@@ -212,5 +215,3 @@ button {
 button:hover {
   background-color: #555;
 }
-
-

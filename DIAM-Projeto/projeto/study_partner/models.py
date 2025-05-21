@@ -14,11 +14,9 @@ class Channel(models.Model):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    channels = models.ManyToManyField(Channel)
     first_name = models.CharField(max_length=100) 
     last_name = models.CharField(max_length=100) 
     course = models.CharField(max_length=50) 
-    reputation = models.IntegerField(default=0)
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.DO_NOTHING)

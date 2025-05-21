@@ -35,12 +35,12 @@ const Channel = () => {
           break;
 
         case WebSocketMessageType.MESSAGE:
-            console.log("Received Message to message", data)
-            setMessages((prev) => ({
-              ...prev, 
-              [data.message_id]: data
-            }));
-            break;
+          console.log("Received Message to message", data)
+          setMessages((prev) => ({
+            ...prev,
+            [data.message_id]: data
+          }));
+          break;
 
         case WebSocketMessageType.CONNECTION_SUCCESS:
           setChannelName(data.channel_name);
@@ -82,8 +82,8 @@ const Channel = () => {
 
   const sendMessage = () => {
     if (!input.trim()) return;
-    sendJsonMessage({ type: WebSocketMessageType.MESSAGE, content: input });
     setInput('');
+    sendJsonMessage({ type: WebSocketMessageType.MESSAGE, content: input });
   };
 
   const getHourMinute = (dateTimeIso) => {
@@ -110,48 +110,52 @@ const Channel = () => {
 
   return (
     <>
-      <div className='chat-container'>
-        <div className='chat-header'>{channelName}</div>
+      {isLoading ?
+        <p>A carregar mensagens...</p>
+        :
+        <div className='chat-container'>
+          <div className='chat-header'>{channelName}</div>
 
-        <div className='chat-messages'>
-          {
-            Object.keys(messages).map((key) => {
-              const message = messages[key];
-              return (
-                <div key={key} className={`chat-bubble ${message.sender === auth.currentUser.username ? 'me' : 'other'}`}>
+          <div className='chat-messages'>
+            {
+              Object.keys(messages).map((key) => {
+                const message = messages[key];
+                return (
+                  <div key={key} className={`chat-bubble ${message.sender === auth.currentUser.username ? 'me' : 'other'}`}>
 
-                  {/* <div>PR: 1</div> */}
-                  <div className="chat-text">{message.content}</div>
-                  <div className="chat-meta">
-                    <span className="chat-name">{`${message.sender}`}</span>
-                    <span className="chat-time">{getHourMinute(message.created_at)}</span>
-                    <div className="like-button" onClick={() => handleLike(key)}>
-                      <FaHeart className={messageLikes[key] ? "liked" : ""} />
-                      {<span className="like-count">{message.total_likes}</span>}
+                    <div className="chat-text">{message.content}</div>
+                    <div className="chat-meta">
+                      <span className="chat-name">{`${message.sender}`}</span>
+                      <span className="chat-time">{getHourMinute(message.created_at)}</span>
+                      <div className="like-button" onClick={() => handleLike(key)}>
+                        <FaHeart className={messageLikes[key] ? "liked" : ""} />
+                        {<span className="like-count">{message.total_likes}</span>}
+                      </div>
                     </div>
                   </div>
-                </div>
+                )
+              }
               )
             }
-            )
-          }
+          </div>
+
+          <div className='chat-input-bar'>
+            <Link to={"https://discord.com"}>
+              <button className="extra-button"  >V</button>
+            </Link>
+            <input
+              value={input}
+              type="text"
+              placeholder="Type a message..."
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+            />
+
+            <button className={"bb"} onClick={sendMessage}>Send</button>
+          </div>
+
         </div>
-
-      <div className='chat-input-bar'>
-        <Link to={"https://discord.com"}>
-         <button className="extra-button"  >V</button>
-        </Link>
-        <input
-          type="text"
-          placeholder="Type a message..."
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-        />
-
-        <button className={"bb"} onClick={sendMessage}>Send</button>
-      </div>
-
-      </div>
+      }
     </>
   );
 }
