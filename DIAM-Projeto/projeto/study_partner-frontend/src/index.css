@@ -70,6 +70,7 @@ body {
   background-color: rgb(215, 216, 213);;
   color: rgb(38, 39, 36);
   padding: 0;
+
 }
 
 .Main {
@@ -79,12 +80,14 @@ body {
   margin: 1px;
   display: flex;
 
+
 }
 
 .MainBox {
   background-color: rgb(215, 216, 213);
   color: white;
   padding: 10px;
+
 }
 
 ul {

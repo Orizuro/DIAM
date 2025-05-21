@@ -136,7 +136,7 @@ def create_session(request):
 @permission_classes([IsAuthenticated])
 def delete_session(request):
     try:
-        session_id = request.data.get("session_id")
+        session_id = request.data.get("id")
 
         session = Session.objects.get(id=session_id)
 
@@ -334,6 +334,7 @@ def get_channel_by_session(request):
     data = []
     for session in sessions:
         session_dict = {
+            "session_id": session.id,
             "user": session.user.username,
             "code": session.channel.uc.code,
             "name": session.channel.uc.name,
