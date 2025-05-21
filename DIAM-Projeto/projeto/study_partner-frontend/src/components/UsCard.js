@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './styles/UsCard.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/AuthProvider';
 
 const UcCard = ({ name, description, code, onEdit, onDelete }) => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
+  const auth = useAuth();
 
   const handleClick = () => {
     navigate(`/channel/${code}`);
@@ -28,8 +30,8 @@ const UcCard = ({ name, description, code, onEdit, onDelete }) => {
         <h4>{name}</h4>
         <div className="menu-container">
           <button className="menu-button" onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}>⋮</button>
-          {showMenu && (
-            <div className="dropdown-menu" onClick={(e) => e.stopPropagation()}>
+          {showMenu && auth.currentUser.isAdmin && (
+            <div className="dropdown-menu">
               <div onClick={handleEdit}>Edit</div>
               <div onClick={handleDelete}>Delete</div>
             </div>

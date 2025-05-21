@@ -37,9 +37,11 @@ urlpatterns = [
 
     # UC CRUD
     path('api/create-uc/', views.create_uc),
-    path('api/delete-uc/', views.delete_uc),
     path('api/get-ucs/', views.get_ucs),
+    path('api/edit_uc/', views.edit_uc),
+    path('api/delete-uc/', views.delete_uc),
 
     path('api/get_channels_by_sessions/', views.get_channel_by_session)
+
 ]
 

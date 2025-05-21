@@ -34,6 +34,7 @@ const AuthProvider = ({ children }) => {
       const response = await axios.post(Constants.LOGIN_URL, { username, password }, { withCredentials: true });
 
       const user = response.data.user;
+      console.log(user)
       setCurrentUser(user);
       localStorage.setItem(Constants.LS_USER_ITEM, JSON.stringify(user));
       return true;

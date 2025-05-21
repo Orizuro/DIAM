@@ -342,3 +342,30 @@ def get_channel_by_session(request):
         data.append(session_dict)
 
     return Response({"channels": data})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def edit_uc(request):
+    try:
+        code = request.data.get("id")
+        name = request.data.get("name")
+        description = request.data.get("description")
+
+        if not code:
+            return Response({"error": "Missing UC code"}, status=status.HTTP_400_BAD_REQUEST)
+        if not name or not description:
+            return Response({"error": "Both name and description are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            uc = Uc.objects.get(code=code)
+        except Uc.DoesNotExist:
+            return Response({"error": "UC not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        uc.name = name
+        uc.description = description
+        uc.save()
+
+        return Response({"message": "UC updated successfully!"})
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

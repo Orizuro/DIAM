@@ -17,6 +17,9 @@ export const DELETE_SESSION_URL = `http://${BACKEND_HOST}/api/delete-session/`
 
 export const GET_CHANNELS_BY_SESSIONS_URL = `http://${BACKEND_HOST}/api/get_channels_by_sessions/`
 
+export const EDIT_UC_URL = `http://${BACKEND_HOST}/api/edit_uc/`
+
+
 
 export const getMessagesURL = (channel_id) => {
   return `http://${BACKEND_HOST}/api/messages/?channel_id=${channel_id}`
@@ -43,7 +46,7 @@ export const getLocalDateString = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-export const deleteFactory = (endpoint, id) => {
+export const deleteFactory = async (endpoint, id) => {
   try {
     axios.post(endpoint, { id }, { withCredentials: true });
   } catch (err) {
