@@ -5,6 +5,7 @@ import axios from 'axios';
 import Channel from '../pages/channel/Channel';
 import './styles/UcPage.css';
 import { GET_SESSIONS_URL, CREATE_SESSION_URL, DELETE_SESSION_URL, getLocalDateString, deleteFactory } from '../Constants';
+import moment from "moment";
 
 const UcPage = () => {
   const { channel_id } = useParams();
@@ -16,7 +17,7 @@ const UcPage = () => {
   const generateTimeSlots = (date) => {
     const slots = [];
     const start = new Date(date);
-    start.setHours(3, 0, 0, 0);
+    start.setHours(1, 0, 0, 0);
 
     for (let i = 0; i < 48; i++) {
       const slot = new Date(start);
@@ -79,7 +80,8 @@ const UcPage = () => {
         );
 
         if (response.data.sessions && response.data.sessions.length > 0) {
-          const dateString = day.toISOString().split('T')[0];
+          const dateString = day.toISOString(true).split('T')[0];
+
           daysWithSessionsArray.push(dateString);
           console.log(`Found sessions on ${dateString}`);
         }
@@ -93,12 +95,12 @@ const UcPage = () => {
   };
 
   const handleSlotToggle = async (slotTime, isCurrentlyBooked, session_id) => {
-    const iso = slotTime.toISOString();
-
+    const iso = slotTime.toISOString() ;
+    console.log(iso);
     try {
       if (isCurrentlyBooked) {
         // DELETE session
-        deleteFactory(DELETE_SESSION_URL, session_id)
+        await deleteFactory(DELETE_SESSION_URL, session_id)
       } else {
         // CREATE session
         await axios.post(
@@ -166,7 +168,6 @@ const UcPage = () => {
                         );
 
                         const isBooked = session ? true : false;
-                        console.log("isBooked", isBooked)
 
                         return (
                             <label key={i} className="time-slot">

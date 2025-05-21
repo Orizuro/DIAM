@@ -184,7 +184,7 @@ def create_uc(request):
 
         return Response(
             {
-                "message": "UC and Channel created successfully!",
+                "message": "UC and Channel cDateTimeFieldreated successfully!",
                 "uc": {
                     "code": uc.code,
                     "name": uc.name,
