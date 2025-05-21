@@ -149,9 +149,13 @@ const MinhasSessoes = () => {
                               {time} — {session.user}
                               <button
                                   className="delete-btn"
-                                  onClick={() => {deleteFactory(DELETE_SESSION_URL ,session.session_id)
-                                    setDaySessions(prev => prev.filter(s => s.session_id !== session.session_id));
-                                    }}
+                                  onClick={async () => {
+                                    deleteFactory(DELETE_SESSION_URL, session.session_id)
+                                    setDaySessions(prev => prev.filter(s => s.session_id !== session.session_id))
+                                    await getSessions()
+
+
+                                  }}
                               >
                                 Cancelar
                               </button>
