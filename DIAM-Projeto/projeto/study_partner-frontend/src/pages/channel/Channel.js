@@ -136,16 +136,19 @@ const Channel = () => {
           }
         </div>
 
-        <div className='chat-input-bar'>
-          <input
-            type="text"
-            placeholder="Type a message..."
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          />
+      <div className='chat-input-bar'>
+        <button className="extra-button">+</button>
 
-          <button onClick={sendMessage}>Send</button>
-        </div>
+        <input
+          type="text"
+          placeholder="Type a message..."
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+        />
+
+        <button onClick={sendMessage}>Send</button>
+      </div>
+
       </div>
     </>
   );

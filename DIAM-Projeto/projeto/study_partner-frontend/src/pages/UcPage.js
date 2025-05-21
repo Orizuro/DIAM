@@ -111,7 +111,7 @@ const UcPage = () => {
         );
       }
 
-
+      // Use context to update the component
       await getSessions();
     } catch (error) {
       console.error('Error toggling session:', error);
