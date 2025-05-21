@@ -10,7 +10,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from datetime import datetime
 from dateutil.parser import parse
-from django.shortcuts import get_object_or_404
 
 
 @api_view(['POST'])
@@ -203,7 +202,7 @@ def create_uc(request):
 @permission_classes([IsAuthenticated, IsAdminUser])
 def delete_uc(request):
     try:
-        code = request.data.get("code")
+        code = request.data.get("id")
 
         if not code:
             return Response({"error": "Missing UC code"}, status=status.HTTP_400_BAD_REQUEST)
