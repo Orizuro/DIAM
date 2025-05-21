@@ -1,3 +1,4 @@
+import axios from "axios"
 
 // export const BACKEND_HOST = '192.168.1.10:8000'
 export const BACKEND_HOST = 'localhost:8000'
@@ -41,3 +42,11 @@ export const getLocalDateString = (date) => {
   const day = `${date.getDate()}`.padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
+
+export const deleteFactory = (endpoint, id) => {
+  try {
+    axios.post(endpoint, { id }, { withCredentials: true });
+  } catch (err) {
+    throw err;
+  }
+}

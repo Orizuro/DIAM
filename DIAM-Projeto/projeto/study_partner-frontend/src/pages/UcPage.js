@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Channel from '../pages/channel/Channel';
 import './styles/UcPage.css';
-import { GET_SESSIONS_URL, CREATE_SESSION_URL, DELETE_SESSION_URL, getLocalDateString } from '../Constants';
+import { GET_SESSIONS_URL, CREATE_SESSION_URL, DELETE_SESSION_URL, getLocalDateString, deleteFactory } from '../Constants';
 
 const UcPage = () => {
   const { channel_id } = useParams();
@@ -92,20 +92,13 @@ const UcPage = () => {
     }
   };
 
-  const handleSlotToggle = async (slotTime, isCurrentlyBooked) => {
+  const handleSlotToggle = async (slotTime, isCurrentlyBooked, session_id) => {
     const iso = slotTime.toISOString();
 
     try {
       if (isCurrentlyBooked) {
         // DELETE session
-        await axios.post(
-          DELETE_SESSION_URL,
-          {
-            uc: channel_id,
-            date_time: iso,
-          },
-          { withCredentials: true }
-        );
+        deleteFactory(DELETE_SESSION_URL, session_id)
       } else {
         // CREATE session
         await axios.post(
@@ -151,14 +144,14 @@ const UcPage = () => {
       <div className="chat-with-calendar-container">
         <div className="calendar-section">
           <div className="calendar-scroll-container">
-
+            <div className="react-calendar">
               <Calendar
                 onChange={setSelectedDate}
                 showNeighboringMonth={false}
                 value={selectedDate}
                 tileClassName={getTileClassName}
               />
-
+            </div>
 
             <div className="session-list-container">
               <h3 className="session-list-header">Sessions on {selectedDate.toDateString()}</h3>
@@ -168,16 +161,19 @@ const UcPage = () => {
                 ) : (
                     <div className="time-slot-list">
                       {generateTimeSlots(selectedDate).map((slot, i) => {
-                        const isBooked = sessions.some(
+                        const session = sessions.find(
                             (s) => new Date(s.date_time).getTime() === slot.getTime()
                         );
+
+                        const isBooked = session ? true : false;
+                        console.log("isBooked", isBooked)
 
                         return (
                             <label key={i} className="time-slot">
                               <input
                                   type="checkbox"
                                   checked={isBooked}
-                                  onChange={() => handleSlotToggle(slot, isBooked)}
+                                  onChange={() => handleSlotToggle(slot, isBooked, session?.session_id)}
                               />
                               <span>
                                 {String(slot.getHours()).padStart(2, '0')}:{String(slot.getMinutes()).padStart(2, '0')}
