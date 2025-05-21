@@ -42,3 +42,28 @@
 .session-list ul {
     background-color: rgb(215, 216, 213);
 }
+.session-card {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    justify-content: space-between;
+   display: flex;
+
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}

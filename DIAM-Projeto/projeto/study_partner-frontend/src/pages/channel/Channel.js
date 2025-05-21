@@ -6,6 +6,7 @@ import useWebSocket from 'react-use-websocket';
 import { getMessagesURL, WebSocketMessageType, WS_URL } from '../../Constants';
 import { useAuth } from '../../hooks/AuthProvider';
 import { FaHeart } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Channel = () => {
   const { channel_id } = useParams();
@@ -137,8 +138,9 @@ const Channel = () => {
         </div>
 
       <div className='chat-input-bar'>
-        <button className="extra-button">+</button>
-
+        <Link to={"https://discord.com"}>
+         <button className="extra-button"  >V</button>
+        </Link>
         <input
           type="text"
           placeholder="Type a message..."
@@ -146,7 +148,7 @@ const Channel = () => {
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
 
-        <button onClick={sendMessage}>Send</button>
+        <button className={"bb"} onClick={sendMessage}>Send</button>
       </div>
 
       </div>

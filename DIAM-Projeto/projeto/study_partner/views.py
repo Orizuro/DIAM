@@ -184,7 +184,7 @@ def create_uc(request):
 
         return Response(
             {
-                "message": "UC and Channel created successfully!",
+                "message": "UC and Channel cDateTimeFieldreated successfully!",
                 "uc": {
                     "code": uc.code,
                     "name": uc.name,
@@ -333,6 +333,7 @@ def get_channel_by_session(request):
     data = []
     for session in sessions:
         session_dict = {
+            "session_id": session.id,
             "user": session.user.username,
             "code": session.channel.uc.code,
             "name": session.channel.uc.name,

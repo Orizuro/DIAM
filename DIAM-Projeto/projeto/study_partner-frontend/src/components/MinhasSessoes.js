@@ -6,7 +6,7 @@ import {
   DELETE_SESSION_URL,
   getLocalDateString,
   GET_CHANNELS_BY_SESSIONS_URL,
-  GET_SESSIONS_URL
+  GET_SESSIONS_URL, deleteFactory
 } from "../Constants";
 import axios from "axios";
 import { Link } from 'react-router-dom';
@@ -14,8 +14,8 @@ import { useAuth } from '../hooks/AuthProvider';
 
 const MinhasSessoes = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [myUcs, setMyUcs] = useState([]);
-  const [daySessions, setDaySessions] = useState([]); // ✅ corrected name
+  const [myUcs, setMyUcs,] = useState([]);
+  const [daySessions, setDaySessions] = useState([]);
   const auth = useAuth();
 
   // Filter for unique UCs
@@ -60,6 +60,7 @@ const MinhasSessoes = () => {
           { withCredentials: true }
       );
       setDaySessions(response.data.channels || []); // ✅ match the new API field
+      console.log(daySessions);
     } catch (error) {
       console.error('Error fetching day sessions:', error);
       setDaySessions([]);
@@ -135,7 +136,7 @@ const MinhasSessoes = () => {
               <h4>Sessões neste dia:</h4>
               {
                 daySessions.length > 0 ? (
-                    <ul>
+                    <div>
                       {daySessions.map((session, idx) => {
                         const time = new Date(session.description).toLocaleTimeString('pt-PT', {
                           hour: '2-digit',
@@ -144,13 +145,24 @@ const MinhasSessoes = () => {
 
                         return (
                             <div className="session-card" key={idx}>
-                              <strong>{session.name}</strong><br />
+                              {session.name}<br /><br/>
                               {time} — {session.user}
-                            </div>
+                              <button
+                                  className="delete-btn"
+                                  onClick={async () => {
+                                    deleteFactory(DELETE_SESSION_URL, session.session_id)
+                                    setDaySessions(prev => prev.filter(s => s.session_id !== session.session_id))
+                                    await getSessions()
 
+
+                                  }}
+                              >
+                                Cancelar
+                              </button>
+                            </div>
                         );
                       })}
-                    </ul>
+                    </div>
                 ) : (
                     <p>Sem sessões para este dia.</p>
                 )

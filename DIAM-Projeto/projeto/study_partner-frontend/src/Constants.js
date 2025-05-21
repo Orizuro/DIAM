@@ -48,8 +48,10 @@ export const getLocalDateString = (date) => {
 
 export const deleteFactory = async (endpoint, id) => {
   try {
-    axios.post(endpoint, { id }, { withCredentials: true });
+    const response = await axios.post(endpoint, { id }, { withCredentials: true });
+    return response;
   } catch (err) {
     throw err;
   }
 }
+
